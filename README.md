@@ -15,8 +15,8 @@ To create a production version of your app:
 npm run build
 ```
 
-## Publish
+## Deploy
 
 ```bash
-npx gh-pages -d build -t true
+npm run deploy
 ```
