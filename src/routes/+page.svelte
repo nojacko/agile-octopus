@@ -1,21 +1,24 @@
 <script lang="ts">
-    import { onMount } from "svelte";
     import { DateTime } from "luxon";
+	import { slide } from 'svelte/transition';
     import type PricingHash from "$lib/PricesHash";
     import Price from "$lib/Price";
     import RegionSelect from "$lib/RegionSelect.svelte";
     import PricingTable from "$lib/PricingTable.svelte";
 	import PriceCapInput from "$lib/PriceCapInput.svelte";
-
-    const priceCapChange = DateTime.fromISO("2023-10-01T12:00:00Z").startOf('day');
+    import { validRegion } from "$lib/regions";
 
     let region: string;
-    let priceCap = (DateTime.now() > priceCapChange) ? 27 : 30;
+    let priceCap: number;
     let pricing: Price[] = [];
 
     $: region && loadData();
 
     const loadData = async function() {
+        if (!validRegion(region)) {
+            return;
+        }
+
         try {
             const dateTimeNow = DateTime.now();
             const periodFrom = dateTimeNow.minus({day: 7});
@@ -59,24 +62,34 @@
             return;
         }
 
-
-        setTimeout(() => loadData(), 60 * 1000);
+        // Update data once an hour
+        setTimeout(() => loadData(), 60 * 60 * 1000);
     }
-
-    onMount(async () => {
-        await loadData();
-    });
 </script>
 
 <svelte:head>
     <title>Agile Octopus Price Tracker</title>
-    <meta name="description" content="This is where the description goes for SEO" />
+    <meta name="description" content="Quickly see the upcoming electricity prices for Octopus Energy's Agile Octopus tariff." />
 </svelte:head>
 
-<h1>Agile Octopus Price Tracker</h1>
+<div class="container mb-4">
+    <h1 class="text-center">Agile Octopus Price Tracker</h1>
 
-<RegionSelect bind:region={region}></RegionSelect>
-<PricingTable pricing={pricing} priceCap={priceCap}></PricingTable>
-<PriceCapInput bind:priceCap={priceCap}></PriceCapInput>
+    <strong>What Is This Website?</strong>
+    <p>Quickly see the upcoming electricity prices for Octopus Energy's <em>Agile Octopus</em> tariff.</p>
+
+    <strong>What Is Agile Octopus?</strong>
+    <p>With Agile Octopus, you get access to half-hourly energy prices, tied to wholesale prices and updated daily. So when wholesale electricity prices drop, so do your bills - and if you can shift your daily electricity use outside of peak times, you can save even more.</p>
+    <p>Agile Octopus includes Plunge Pricing that lets you take advantage of these negative price events, and get paid for the electricity you use!</p>
+
+    <strong>How To Join?</strong>
+    <p>Firstly, you need to be an Octpus customer. <a href="https://share.octopus.energy/sunny-river-570" target="_blank">Sign up here and get £50 free credit!</a> Once the switch has completed, head over to the <a href="https://octopus.energy/smart/agile/" target="_blank">Agile Octpus</a> page and sign up.</p>
+
+    <RegionSelect bind:region={region}></RegionSelect>
+    <PricingTable pricing={pricing} priceCap={priceCap}></PricingTable>
+</div>
+<div class="container">
+    <PriceCapInput bind:priceCap={priceCap} ></PriceCapInput>
+</div>
 
 

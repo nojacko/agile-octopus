@@ -15,4 +15,8 @@ const regions: { [key: string]: string; } = {
     "P": "Northern Scotland"
 }
 
-export default regions
+export default regions;
+
+export const validRegion = function(value: string) {
+    return (value && value.length && typeof value === "string" && regions.hasOwnProperty(value));
+}
