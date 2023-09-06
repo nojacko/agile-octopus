@@ -64,31 +64,35 @@
             <div class="col-12 text-center text-bg-dark p-2 fw-bold">{item.price.fullReadableDate}</div>
         </div>
 
-        <div class="row justify-content-center font-monospace fw-bold">
-            <div class="col-2 text-start"></div>
-            <div class="col-3 text-center">Time</div>
-            <div class="col-3 text-end">Countdown</div>
-            <div class="col-2 text-end">Import</div>
-            <div class="col-2 text-end">Export</div>
+        <div class="row justify-content-center text-center">
+            <div class="col-3 px-0">Time</div>
+            <div class="col-3 px-0 text-end">When</div>
+            <div class="col-2 px-0">&nbsp;</div>
+            <div class="col-2 px-0">Import</div>
+            <div class="col-2 px-0">Export</div>
         </div>
     {/if}
 
     <div class="row justify-content-center font-monospace">
-        <div class="col-2 text-start">
-            {#if item.price.closeToLowestImport(lowestImport[item.price.fullReadableDate])}IMPORT{/if}
-            {#if item.price.closeToHighestExport(highestExport[item.price.fullReadableDate])}EXPORT{/if}
-            {#if item.price.import < 0}🟢{/if}
-        </div>
-        <div class="col-3 text-center">
+        <div class="col-3 px-0 text-center">
             {item.price.readableDate} 
         </div>
-        <div class="col-3 text-end">
+        <div class="col-3 px-0 text-end">
             {item.price.diffStr()}
         </div>
-        <div class="col-2 text-end" style="background-color: {item.price.importColor(priceCap)}; color: Black;">
+        <div class="col-2 px-0 text-center">
+            {#if item.price.import <= 0}
+                <i class="fa-solid fa-coins" style="color: Gold"></i>    
+            {:else if item.price.importCloseToLowestImport(lowestImport[item.price.fullReadableDate])}
+                <i class="fa-solid fa-arrow-down" style="color: {item.price.importColor(priceCap)};"></i>
+            {:else if item.price.import > priceCap}
+            <i class="fa-solid fa-fade fa-triangle-exclamation" style="color: Yellow"></i>
+            {/if}
+        </div>
+        <div class="col-2 px-1 text-end" style="background-color: {item.price.importColor(priceCap)}; color: Black;">
             {item.price.import.toFixed(0)}p
         </div>
-        <div class="col-2 text-end" style="background-color: {item.price.exportColor(priceCap)}; color: Black;">
+        <div class="col-2 px-1 text-end" style="background-color: {item.price.exportColor(priceCap)}; color: Black;">
             {item.price.export.toFixed(0)}p
         </div>
     </div>

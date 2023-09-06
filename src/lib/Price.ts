@@ -67,11 +67,11 @@ class Price {
         return bgColor
     }
 
-    closeToLowestImport(lowestImport: number, margin = 1) {
+    importCloseToLowestImport(lowestImport: number, margin = 1) {
         return (this.import <= lowestImport + margin);
     }
 
-    closeToHighestExport(lowestImport: number, margin = 1) {
+    exportCloseToHighestExport(lowestImport: number, margin = 1) {
         return (this.export >= lowestImport - margin);
     }
 };

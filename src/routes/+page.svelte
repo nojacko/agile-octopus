@@ -1,23 +1,30 @@
 <script lang="ts">
     import { DateTime } from "luxon";
-	import { slide } from 'svelte/transition';
+    import { validRegion } from "$lib/regions";
+    import { defaultPriceCap } from "$lib/price-cap";
     import type PricingHash from "$lib/PricesHash";
+
     import Price from "$lib/Price";
     import RegionSelect from "$lib/RegionSelect.svelte";
     import PricingTable from "$lib/PricingTable.svelte";
 	import PriceCapInput from "$lib/PriceCapInput.svelte";
-    import { validRegion } from "$lib/regions";
-
+    import OctopusAd from "$lib/OctopusAd.svelte";
+    
     let region: string;
-    let priceCap: number;
+    let priceCap: number = defaultPriceCap;
     let pricing: Price[] = [];
+    let pricesUpdating = true;
+    let pricesUpdatingError = false;
 
-    $: region && loadData();
+    $: region, loadData();
 
     const loadData = async function() {
         if (!validRegion(region)) {
             return;
         }
+
+        pricesUpdating = true;
+        pricesUpdatingError = false;
 
         try {
             const dateTimeNow = DateTime.now();
@@ -31,7 +38,7 @@
             const exportResp = await fetch(exportUrl);
             const importJson = await importResp.json();
             const exportJson = await exportResp.json();
-
+        
             const pricingHash: PricingHash = {}
 
             for (const item of importJson.results) {
@@ -56,14 +63,19 @@
                 newPricing.push(pricingHash[item]);
             }
             newPricing.sort((a, b) => (a.validFrom.toUnixInteger() - b.validFrom.toUnixInteger()));
+
             pricing = newPricing;
+
+            // Update data once an hour
+            setTimeout(() => loadData(), 60 * 60 * 1000);
         } catch (e) {
-            setTimeout(() => loadData(), 5*1000);
-            return;
+            pricesUpdatingError = true;
+
+            // Update data in a few seconds
+            setTimeout(() => loadData(), 10*1000);
         }
 
-        // Update data once an hour
-        setTimeout(() => loadData(), 60 * 60 * 1000);
+        pricesUpdating = false; 
     }
 </script>
 
@@ -72,24 +84,44 @@
     <meta name="description" content="Quickly see the upcoming electricity prices for Octopus Energy's Agile Octopus tariff." />
 </svelte:head>
 
-<div class="container mb-4">
+<div class="container">
     <h1 class="text-center">Agile Octopus Price Tracker</h1>
+    <p>
+        Quickly see the upcoming electricity prices for Octopus Energy's <a href="#learn-more">Agile Octopus</a> tariff.
+        <a href="#learn-more">More information</a>.
+    </p>
 
-    <strong>What Is This Website?</strong>
-    <p>Quickly see the upcoming electricity prices for Octopus Energy's <em>Agile Octopus</em> tariff.</p>
+    <RegionSelect bind:region={region}></RegionSelect>
+</div>
 
-    <strong>What Is Agile Octopus?</strong>
+<div class="container mx-0">
+    <PricingTable pricing={pricing} priceCap={priceCap}></PricingTable>
+</div>
+
+<div class="container">
+    <p class="text-center my-2">
+        {#if pricesUpdating} 
+            <i class="fa-solid fa-bolt fa-beat" style="color: Gold"></i> Loading...
+        {:else if pricesUpdatingError}
+            <i class="fa-solid fa-bug"></i> Sorry. Couldn't load data. Try again later.
+        {:else}
+            Tomorrow's prices available between 4-8pm.
+        {/if} 
+    </p>
+
+    <h2 id="learn-more">What Is Agile Octopus?</h2>
     <p>With Agile Octopus, you get access to half-hourly energy prices, tied to wholesale prices and updated daily. So when wholesale electricity prices drop, so do your bills - and if you can shift your daily electricity use outside of peak times, you can save even more.</p>
     <p>Agile Octopus includes Plunge Pricing that lets you take advantage of these negative price events, and get paid for the electricity you use!</p>
 
-    <strong>How To Join?</strong>
-    <p>Firstly, you need to be an Octpus customer. <a href="https://share.octopus.energy/sunny-river-570" target="_blank">Sign up here and get £50 free credit!</a> Once the switch has completed, head over to the <a href="https://octopus.energy/smart/agile/" target="_blank">Agile Octpus</a> page and sign up.</p>
+    <h2>How To Get Agile?</h2>
+    <ol>
+        <li><a href="https://share.octopus.energy/sunny-river-570" target="_blank">Switch to Octopus Energy</a> and get £50 free credit!</li> 
+        <li>After the switch has completed, visit <a href="https://octopus.energy/smart/agile/" target="_blank">Agile Octpus</a> to sign up.</li>
+    </ol>
 
-    <RegionSelect bind:region={region}></RegionSelect>
-    <PricingTable pricing={pricing} priceCap={priceCap}></PricingTable>
+    <OctopusAd />
+
+    <PriceCapInput bind:priceCap={priceCap} defaultPriceCap={defaultPriceCap}></PriceCapInput>
 </div>
-<div class="container">
-    <PriceCapInput bind:priceCap={priceCap} ></PriceCapInput>
-</div>
 
-
+<p class="text-center">🐙</p>

@@ -36,7 +36,7 @@
             <option value={key}>{regions[key]} ({key})</option>
         {/each}
     </select>
-  </div>
+</div>
 
   
 
