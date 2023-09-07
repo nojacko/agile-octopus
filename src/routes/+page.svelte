@@ -94,7 +94,7 @@
     <RegionSelect bind:region={region}></RegionSelect>
 </div>
 
-<div class="container mx-0">
+<div class="container mx-auto">
     <PricingTable pricing={pricing} priceCap={priceCap}></PricingTable>
 </div>
 
@@ -125,3 +125,9 @@
 </div>
 
 <p class="text-center">🐙</p>
+
+<style>
+    .container {
+        max-width: 30rem;
+    }
+</style>
