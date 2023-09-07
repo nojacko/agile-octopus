@@ -84,7 +84,7 @@
     <meta name="description" content="Quickly see the upcoming electricity prices for Octopus Energy's Agile Octopus tariff." />
 </svelte:head>
 
-<div class="container">
+<div class="container mt-2">
     <h1 class="text-center">Agile Octopus Price Tracker</h1>
     <p>
         Quickly see the upcoming electricity prices for Octopus Energy's <a href="#learn-more">Agile Octopus</a> tariff.
@@ -109,17 +109,21 @@
         {/if} 
     </p>
 
+    <hr>
+
     <h2 id="learn-more">What Is Agile Octopus?</h2>
     <p>With Agile Octopus, you get access to half-hourly energy prices, tied to wholesale prices and updated daily. So when wholesale electricity prices drop, so do your bills - and if you can shift your daily electricity use outside of peak times, you can save even more.</p>
     <p>Agile Octopus includes Plunge Pricing that lets you take advantage of these negative price events, and get paid for the electricity you use!</p>
 
-    <h2>How To Get Agile?</h2>
+    <h2>How To Get Agile Octopus?</h2>
     <ol>
         <li><a href="https://share.octopus.energy/sunny-river-570" target="_blank">Switch to Octopus Energy</a> and get £50 free credit!</li> 
         <li>After the switch has completed, visit <a href="https://octopus.energy/smart/agile/" target="_blank">Agile Octpus</a> to sign up.</li>
     </ol>
 
     <OctopusAd />
+
+    <hr>
 
     <PriceCapInput bind:priceCap={priceCap} defaultPriceCap={defaultPriceCap}></PriceCapInput>
 </div>
