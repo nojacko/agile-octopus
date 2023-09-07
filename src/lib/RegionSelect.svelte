@@ -60,9 +60,7 @@
             lookupError = true;
         }
         
-        setTimeout(() => {
         lookupLoading = false;
-        }, 2*1000)
     }
 
     onMount(() => {
