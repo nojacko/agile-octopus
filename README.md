@@ -1,4 +1,8 @@
-# Agile Octopus
+# Agile Octopus Price Tracker
+
+Quickly see the upcoming electricity prices for Octopus Energy's Agile Octopus tariff. Visit <https://agile-octopus.datafury.io> to use.
+
+If you want to join [Octopus Energy](https://share.octopus.energy/sunny-river-570) please consider using my [link](https://share.octopus.energy/sunny-river-570) and get £50 free credit free!
 
 ## Developing
 
