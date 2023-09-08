@@ -1,0 +1,1 @@
+<i class="fa-solid fa-coins fa-beat" style="color: Gold"></i> 

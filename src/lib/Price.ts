@@ -1,4 +1,5 @@
 import { DateTime } from "luxon";
+import { importColor, exportColor } from "$lib/colors";
 
 class Price {
     validFrom: DateTime;
@@ -31,40 +32,11 @@ class Price {
     }
 
     importColor(priceCap: number) {
-        // Color
-        let bgColor = "#28B463"; // Green
-        if (this.import > priceCap) {
-            bgColor = "#BF40BF"; // Purple
-        } else if (this.import > priceCap/4*3) {
-            bgColor = "#E74C3C"; // Red
-        } else if (this.import > priceCap/4*2) {
-            bgColor = "#E59866"; // Orange
-        } else if (this.import > priceCap/4*1) {
-            bgColor = "#F7DC6F"; // Yellow
-        } else if (this.import > 0) {
-            bgColor = "#58D68D"; // Light green
-        }
-
-        return bgColor
+        return importColor(this.import, priceCap);
     }
 
     exportColor(priceCap: number) {
-        const priceCapAdj = priceCap/2;
-        // Color
-        let bgColor = "#BF40BF"; // Purple 
-        if (this.export > priceCapAdj) {
-            bgColor = "#28B463"; // Green
-        } else if (this.export > priceCapAdj/4*3) {
-            bgColor = "#58D68D"; // Light green
-        } else if (this.export > priceCapAdj/4*2) {
-            bgColor = "#F7DC6F"; // Yellow
-        } else if (this.export > priceCapAdj/4*1) {
-            bgColor = "#E59866"; // Orange
-        } else if (this.export > 0) {
-            bgColor = "#E74C3C"; // Red
-        }
-
-        return bgColor
+        return exportColor(this.export, priceCap)
     }
 
     importCloseToLowestImport(lowestImport: number, margin = 1) {

@@ -2,6 +2,9 @@
     import { onMount } from "svelte";
     import type Price from "./Price";
 	import { DateTime } from "luxon";
+	import IconAboveCap from "./IconAboveCap.svelte";
+	import IconImportLowest from "./IconImportLowest.svelte";
+	import IconImportPaid from "./IconImportPaid.svelte";
     export let pricing: Price[] = [];
     export let priceCap: number;
 
@@ -82,11 +85,11 @@
         </div>
         <div class="col-2 px-0 text-center">
             {#if item.price.import <= 0}
-                <i class="fa-solid fa-coins" style="color: Gold"></i>    
+                <IconImportPaid /> 
             {:else if item.price.importCloseToLowestImport(lowestImport[item.price.fullReadableDate])}
-                <i class="fa-solid fa-arrow-down" style="color: {item.price.importColor(priceCap)};"></i>
+                <IconImportLowest color={item.price.importColor(priceCap)} />
             {:else if item.price.import > priceCap}
-            <i class="fa-solid fa-fade fa-triangle-exclamation" style="color: Yellow"></i>
+                <IconAboveCap />
             {/if}
         </div>
         <div class="col-2 px-1 text-end" style="background-color: {item.price.importColor(priceCap)}; color: Black;">
