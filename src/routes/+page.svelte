@@ -4,12 +4,12 @@
     import { defaultPriceCap } from "$lib/price-cap";
     import type PricingHash from "$lib/PricesHash";
 
-	import IconLoading from "$lib/Icons/IconLoading.svelte";
 	import PriceCapInput from "$lib/PriceCapInput.svelte";
     import OctopusAd from "$lib/OctopusAd.svelte";
     import Price from "$lib/Price";
     import PricingTable from "$lib/PricingTable.svelte";
     import RegionSelect from "$lib/RegionSelect.svelte";
+	import PricingTableFooter from "$lib/PricingTableFooter.svelte";
     
     let region: string;
     let priceCap: number = defaultPriceCap;
@@ -89,32 +89,17 @@
 <div class="container mt-2 mx-auto">
     <h1 class="text-center">Agile Octopus Price Tracker</h1>
     <p>
-        Quickly see the upcoming electricity prices for Octopus Energy's <a href="#learn-more">Agile Octopus</a> tariff.
-        <a href="#learn-more">More information</a>.
+        Quickly see the upcoming electricity prices for Octopus Energy's <a href="#about">Agile Octopus</a> tariff.
+        <a href="#about">More information</a>.
     </p>
 
     <RegionSelect bind:region={region}></RegionSelect>
     <PricingTable pricing={pricing} priceCap={priceCap}></PricingTable>
-
-    <p class="text-center my-2">
-        {#if pricing.length == 0}
-            <div class="alert alert-secondary text-center" role="alert">
-                <p class="lead my-0">
-                    <IconLoading /><br>
-                    Loading the latest Agile pricing data...</p>
-            </div>
-        {:else if pricesUpdating} 
-            <IconLoading /> Loading...
-        {:else if pricesUpdatingError}
-            <i class="fa-solid fa-bug"></i> Sorry. Couldn't load data. Try again later.
-        {:else}
-            <small>Prices become available between 4-8pm</small>
-        {/if} 
-    </p>
+    <PricingTableFooter initialLoad={pricing.length == 0} updating={pricesUpdating} error={pricesUpdatingError} />
 
     <hr class="mx-5">
 
-    <h2 id="learn-more">What Is Agile Octopus?</h2>
+    <h2 id="about">What Is Agile Octopus?</h2>
     <p>With Agile Octopus, you get access to half-hourly energy prices, tied to wholesale prices and updated daily. So when wholesale electricity prices drop, so do your bills - and if you can shift your daily electricity use outside of peak times, you can save even more.</p>
     <p>Agile Octopus includes Plunge Pricing that lets you take advantage of these negative price events, and get paid for the electricity you use!</p>
 
@@ -127,12 +112,38 @@
     <OctopusAd />
     <PriceCapInput bind:priceCap={priceCap} defaultPriceCap={defaultPriceCap}></PriceCapInput>
 
-    <p class="fs-1 text-center">🐙</p>
+    <p class="fs-1 text-center mb-5">🐙</p>
 </div>
 
+
+<div id="nav-bar" class="container-fluid border-top border-secondary-subtle py-1 text-center text-body-secondary">
+    <small>
+        <a href="#top" class="text-body-secondary"><i class="fa-solid fa-house"></i></a>
+        <i class="fa-solid fa-bolt fa-2xs"></i>
+        <a href="#region" class="text-body-secondary">Region</a> 
+        <i class="fa-solid fa-bolt fa-2xs"></i>
+        <a href="#pricing-table" class="text-body-secondary">Pricing</a> 
+        <i class="fa-solid fa-bolt fa-2xs"></i>
+        <a href="#about" class="text-body-secondary">FAQs</a> 
+        <i class="fa-solid fa-bolt fa-2xs"></i>
+        <a href="#price-cap" class="text-body-secondary">Price Cap</a>
+    </small>
+</div>
 
 <style>
     .container {
         max-width: 30rem;
+    }
+
+    #nav-bar {
+        position: fixed;
+        bottom: 0rem;
+        left: 0rem;
+        right: 0rem;
+        z-index: 10;
+        background-color: rgb(33, 37, 41);
+    }
+    #nav-bar a {
+        color: White;
     }
 </style>

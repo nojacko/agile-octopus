@@ -74,59 +74,56 @@
     });
 </script>
 
-<div class="input-group mb-3">
-    <label class="input-group-text" for="region-select">Region</label>
-    <select bind:value={region} class="form-select" id="region-select"> 
-        <option value="">Select your region...</option>
-        {#each Object.keys(regions) as key}
-            <option value={key}>{regions[key]} ({key})</option>
-        {/each}
-    </select>
-    <button on:click={() => { showLookup = !showLookup }} class="btn btn-outline-secondary" type="button">
-        <i class="fa-solid fa-circle-question"></i>
-    </button>
-</div>
-
-{#if showLookup}
-    <div class="card">
-        <div class="card-body">
-            <button type="button" class="btn btn-outline-secondary btn-sm float-end" on:click={() => { showLookup = false; }}><i class="fa-solid fa-xmark"></i></button>
-            
-            <h2 class="card-title">Lookup Your Region</h2>
-            <p>Enter your postcode to find your region.</p>
-
-            {#if lookupLoading} 
-                <div class="alert alert-secondary" role="alert">
-                    <IconLoading /> Loading...
-                </div>
-            {:else if userRegion.length && userPostcode === postcode} 
-                <div class="alert alert-secondary" role="alert">
-                    <i class="fa-solid fa-location-dot"></i> The region for <strong>{postcode.toUpperCase()}</strong> is <strong>{regions[userRegion]} ({userRegion})</strong>.
-                </div>
-            {:else if lookupError} 
-                <div class="alert alert-warning" role="alert">
-                    <i class="fa-solid fa-bug"></i> Something went wrong. Try again later.
-                </div>
-            {:else if lookupNotFound} 
-                <div class="alert alert-warning" role="alert">
-                    <i class="fa-regular fa-circle-question"></i> Could not find region for postcode. Please 
-                </div>
-            {/if}
-
-            <form on:submit|preventDefault={lookupRegion}>
-                <div class="input-group mb-3">
-                    <label class="input-group-text" for="region-select">Postcode</label>
-                    <input type="text" class="form-control" bind:value={postcode} maxlength="10">
-                    <button class="btn btn-outline-secondary" type="submit">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                </div>
-            </form>
-        </div>
+<div id="region" class="py-2">
+    <div class="input-group">
+        <label class="input-group-text" for="region-select">Region</label>
+        <select bind:value={region} class="form-select" id="region-select"> 
+            <option value="">Select your region...</option>
+            {#each Object.keys(regions) as key}
+                <option value={key}>{regions[key]} ({key})</option>
+            {/each}
+        </select>
+        <button on:click={() => { showLookup = !showLookup }} class="btn btn-outline-secondary" type="button">
+            <i class="fa-solid fa-circle-question"></i>
+        </button>
     </div>
-{/if}
 
-  
+    {#if showLookup}
+        <div class="card">
+            <div class="card-body">
+                <button type="button" class="btn btn-outline-secondary btn-sm float-end" on:click={() => { showLookup = false; }}><i class="fa-solid fa-xmark"></i></button>
+                
+                <h2 class="card-title">Lookup Your Region</h2>
+                <p>Enter your postcode to find your region.</p>
 
+                {#if lookupLoading} 
+                    <div class="alert alert-secondary" role="alert">
+                        <IconLoading /> Loading...
+                    </div>
+                {:else if userRegion.length && userPostcode === postcode} 
+                    <div class="alert alert-secondary" role="alert">
+                        <i class="fa-solid fa-location-dot"></i> The region for <strong>{postcode.toUpperCase()}</strong> is <strong>{regions[userRegion]} ({userRegion})</strong>.
+                    </div>
+                {:else if lookupError} 
+                    <div class="alert alert-warning" role="alert">
+                        <i class="fa-solid fa-bug"></i> Something went wrong. Try again later.
+                    </div>
+                {:else if lookupNotFound} 
+                    <div class="alert alert-warning" role="alert">
+                        <i class="fa-regular fa-circle-question"></i> Could not find region for postcode. Please 
+                    </div>
+                {/if}
 
-
+                <form on:submit|preventDefault={lookupRegion}>
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="region-select">Postcode</label>
+                        <input type="text" class="form-control" bind:value={postcode} maxlength="10">
+                        <button class="btn btn-outline-secondary" type="submit">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {/if}
+</div>  
