@@ -68,7 +68,7 @@
         </div>
 
         <div class="row justify-content-center text-center">
-            <div class="col-3 px-0">Time</div>
+            <div class="col-2 px-0">Time</div>
             <div class="col-3 px-0 text-end">When</div>
             <div class="col-2 px-0">&nbsp;</div>
             <div class="col-2 px-0">Import</div>
@@ -77,7 +77,7 @@
     {/if}
 
     <div class="row justify-content-center font-monospace">
-        <div class="col-3 px-0 text-center">
+        <div class="col-2 px-0 text-center">
             {item.price.readableDate} 
         </div>
         <div class="col-3 px-0 text-end">
