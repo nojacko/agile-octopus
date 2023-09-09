@@ -2,9 +2,9 @@
     import { onMount } from "svelte";
     import type Price from "./Price";
 	import { DateTime } from "luxon";
-	import IconAboveCap from "./IconAboveCap.svelte";
-	import IconImportLowest from "./IconImportLowest.svelte";
-	import IconImportPaid from "./IconImportPaid.svelte";
+	import IconAboveCap from "$lib/Icons/IconAboveCap.svelte";
+	import IconImportLowest from "$lib/Icons/IconImportLowest.svelte";
+	import IconImportPaid from "$lib/Icons/IconImportPaid.svelte";
     export let pricing: Price[] = [];
     export let priceCap: number;
 
