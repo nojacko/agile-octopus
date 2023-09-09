@@ -4,11 +4,12 @@
     import { defaultPriceCap } from "$lib/price-cap";
     import type PricingHash from "$lib/PricesHash";
 
-    import Price from "$lib/Price";
-    import RegionSelect from "$lib/RegionSelect.svelte";
-    import PricingTable from "$lib/PricingTable.svelte";
+	import IconLoading from "$lib/Icons/IconLoading.svelte";
 	import PriceCapInput from "$lib/PriceCapInput.svelte";
     import OctopusAd from "$lib/OctopusAd.svelte";
+    import Price from "$lib/Price";
+    import PricingTable from "$lib/PricingTable.svelte";
+    import RegionSelect from "$lib/RegionSelect.svelte";
     
     let region: string;
     let priceCap: number = defaultPriceCap;
@@ -62,9 +63,10 @@
             for (const item of Object.keys(pricingHash)) {
                 newPricing.push(pricingHash[item]);
             }
+            
             newPricing.sort((a, b) => (a.validFrom.toUnixInteger() - b.validFrom.toUnixInteger()));
-
-            pricing = newPricing;
+            pricing = newPricing; 
+    
 
             // Update data once an hour
             setTimeout(() => loadData(), 60 * 60 * 1000);
@@ -84,7 +86,7 @@
     <meta name="description" content="Quickly see the upcoming electricity prices for Octopus Energy's Agile Octopus tariff." />
 </svelte:head>
 
-<div class="container mt-2">
+<div class="container mt-2 mx-auto">
     <h1 class="text-center">Agile Octopus Price Tracker</h1>
     <p>
         Quickly see the upcoming electricity prices for Octopus Energy's <a href="#learn-more">Agile Octopus</a> tariff.
@@ -92,24 +94,25 @@
     </p>
 
     <RegionSelect bind:region={region}></RegionSelect>
-</div>
-
-<div class="container mx-auto">
     <PricingTable pricing={pricing} priceCap={priceCap}></PricingTable>
-</div>
 
-<div class="container">
     <p class="text-center my-2">
-        {#if pricesUpdating} 
-            <i class="fa-solid fa-bolt fa-beat" style="color: Gold"></i> Loading...
+        {#if pricing.length == 0}
+            <div class="alert alert-secondary text-center" role="alert">
+                <p class="lead my-0">
+                    <IconLoading /><br>
+                    Loading the latest Agile pricing data...</p>
+            </div>
+        {:else if pricesUpdating} 
+            <IconLoading /> Loading...
         {:else if pricesUpdatingError}
             <i class="fa-solid fa-bug"></i> Sorry. Couldn't load data. Try again later.
         {:else}
-            Tomorrow's prices available between 4-8pm.
+            <small>Prices become available between 4-8pm</small>
         {/if} 
     </p>
 
-    <hr>
+    <hr class="mx-5">
 
     <h2 id="learn-more">What Is Agile Octopus?</h2>
     <p>With Agile Octopus, you get access to half-hourly energy prices, tied to wholesale prices and updated daily. So when wholesale electricity prices drop, so do your bills - and if you can shift your daily electricity use outside of peak times, you can save even more.</p>
@@ -122,13 +125,11 @@
     </ol>
 
     <OctopusAd />
-
-    <hr>
-
     <PriceCapInput bind:priceCap={priceCap} defaultPriceCap={defaultPriceCap}></PriceCapInput>
+
+    <p class="fs-1 text-center">🐙</p>
 </div>
 
-<p class="text-center">🐙</p>
 
 <style>
     .container {

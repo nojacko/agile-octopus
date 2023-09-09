@@ -2,6 +2,7 @@
 	import { onMount } from "svelte";
     import { browser } from "$app/environment";
     import regions, { validRegion } from "./regions";
+	import IconLoading from "./Icons/IconLoading.svelte";
     export let region: string;
     
     const defaultRegion = "B";
@@ -96,7 +97,7 @@
 
             {#if lookupLoading} 
                 <div class="alert alert-secondary" role="alert">
-                    <i class="fa-solid fa-bolt fa-beat" style="color: Gold"></i> Loading...
+                    <IconLoading /> Loading...
                 </div>
             {:else if userRegion.length && userPostcode === postcode} 
                 <div class="alert alert-secondary" role="alert">
