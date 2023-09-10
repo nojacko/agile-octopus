@@ -45,11 +45,11 @@ class Price {
         return exportColor(this.export, priceCap)
     }
 
-    importCloseToLowestImport(lowestImport: number, margin = 1) {
+    importCloseToLowestImport(lowestImport: number, margin = 2) {
         return (this.import <= lowestImport + margin);
     }
 
-    exportCloseToHighestExport(lowestImport: number, margin = 1) {
+    exportCloseToHighestExport(lowestImport: number, margin = 2) {
         return (this.export >= lowestImport - margin);
     }
 };
