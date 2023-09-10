@@ -10,6 +10,10 @@
     import PricingTable from "$lib/PricingTable.svelte";
     import RegionSelect from "$lib/RegionSelect.svelte";
 	import PricingTableFooter from "$lib/PricingTableFooter.svelte";
+	import PricingWeekTable from "$lib/PricingWeekTable.svelte";
+
+    const PRICE_TAB_UPCOMING = "upcoming";
+    const PRICE_TAB_LAST_WEEK = "last-week";
 
     let region: string;
     let priceCap: number = defaultPriceCap;
@@ -17,6 +21,7 @@
     let pricesUpdating = false;
     let pricesUpdatingError = false;
     let pricingLastUpdated: DateTime;
+    let pricingTab = PRICE_TAB_UPCOMING;
 
     $: region, loadData();
 
@@ -30,7 +35,7 @@
 
         try {
             const dateTimeNow = DateTime.now();
-            const periodFrom = dateTimeNow.minus({day: 7});
+            const periodFrom = dateTimeNow.minus({day: 14}).startOf("day");
             const periodTo = dateTimeNow.plus({day: 1}).endOf("day");
             const baseUrl = "https://api.octopus.energy/v1/products";
             const importUrl = `${baseUrl}/AGILE-FLEX-22-11-25/electricity-tariffs/E-1R-AGILE-FLEX-22-11-25-${region}/standard-unit-rates/?page_size=1500&period_from=${periodFrom.toUTC().toISO()}&period_to=${periodTo.toUTC().toISO()}`;
@@ -114,19 +119,37 @@
     <meta name="description" content="Quickly see the upcoming electricity prices for Octopus Energy's Agile Octopus tariff." />
 </svelte:head>
 
-<div class="container mt-2 mx-auto">
+<div class="container mb-2 mx-auto">
     <h1 class="text-center">Agile Octopus Price Tracker</h1>
     <p>
         Quickly see the upcoming electricity prices for Octopus Energy's <a href="#about">Agile Octopus</a> tariff.
         <a href="#about">More information</a>.
     </p>
 
-    <RegionSelect bind:region={region}></RegionSelect>
-    <PricingTable pricing={pricing} priceCap={priceCap}></PricingTable>
-    <PricingTableFooter initialLoad={pricing.length == 0} updating={pricesUpdating} error={pricesUpdatingError} />
+    <RegionSelect bind:region={region} />
+</div>
 
-    <hr class="mx-5">
+<div class="container mb-2 mx-auto">
+    <ul id="pricing-table" class="nav nav-underline nav-fill mb-2">
+        <li class="nav-item p-0">
+            <button class="nav-link p-1 {(pricingTab === PRICE_TAB_UPCOMING) ? "active" : ""}"
+                on:click={() => { pricingTab = PRICE_TAB_UPCOMING }}>Upcoming</button>
+        </li>
+        <li class="nav-item p-0">
+            <button class="nav-link p-1 {(pricingTab === PRICE_TAB_LAST_WEEK) ? "active" : ""}"
+                on:click={() => { pricingTab = PRICE_TAB_LAST_WEEK }}>Last Week</button>
+        </li>
+    </ul>
 
+    {#if pricingTab === PRICE_TAB_LAST_WEEK}
+        <PricingWeekTable pricing={pricing} priceCap={priceCap} />
+    {:else}
+        <PricingTable pricing={pricing} priceCap={priceCap} />
+        <PricingTableFooter initialLoad={pricing.length == 0} updating={pricesUpdating} error={pricesUpdatingError} />
+    {/if}
+</div>
+
+<div class="container mb-2 mx-auto">
     <h2 id="about">What Is Agile Octopus?</h2>
     <p>With Agile Octopus, you get access to half-hourly energy prices, tied to wholesale prices and updated daily. So when wholesale electricity prices drop, so do your bills - and if you can shift your daily electricity use outside of peak times, you can save even more.</p>
     <p>Agile Octopus includes Plunge Pricing that lets you take advantage of these negative price events, and get paid for the electricity you use!</p>
