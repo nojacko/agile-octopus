@@ -10,17 +10,18 @@
     import PricingTable from "$lib/PricingTable.svelte";
     import RegionSelect from "$lib/RegionSelect.svelte";
 	import PricingTableFooter from "$lib/PricingTableFooter.svelte";
-    
+
     let region: string;
     let priceCap: number = defaultPriceCap;
     let pricing: Price[] = [];
-    let pricesUpdating = true;
+    let pricesUpdating = false;
     let pricesUpdatingError = false;
+    let pricingLastUpdated: DateTime;
 
     $: region, loadData();
 
     const loadData = async function() {
-        if (!validRegion(region)) {
+        if (!validRegion(region) || pricesUpdating) {
             return;
         }
 
@@ -39,18 +40,17 @@
             const exportResp = await fetch(exportUrl);
             const importJson = await importResp.json();
             const exportJson = await exportResp.json();
-        
+
             const pricingHash: PricingHash = {}
 
             for (const item of importJson.results) {
                 const price = new Price();
                 price.validFrom = DateTime.fromISO(item.valid_from);
                 price.validTo = DateTime.fromISO(item.valid_to);
-                price.readableDate = price.validFrom.toFormat("t");
-                price.fullReadableDate = price.validFrom.toFormat("DDDD");
                 price.import = Math.round(item.value_inc_vat * 10) / 10;
                 pricingHash[item.valid_from] = price;
             }
+
             for (const item of exportJson.results) {
                 const price = pricingHash[item.valid_from];
                 if (price) {
@@ -59,26 +59,54 @@
             }
 
             // Sort into an array
-            let newPricing: Price[] = [];
-            for (const item of Object.keys(pricingHash)) {
-                newPricing.push(pricingHash[item]);
-            }
-            
-            newPricing.sort((a, b) => (a.validFrom.toUnixInteger() - b.validFrom.toUnixInteger()));
-            pricing = newPricing; 
-    
+            let _pricing: Price[] = Object.keys(pricingHash).map((key) => pricingHash[key]);
+            _pricing.sort((a, b) => (a.validFrom.toUnixInteger() - b.validFrom.toUnixInteger()));
+            pricing = _pricing;
 
-            // Update data once an hour
-            setTimeout(() => loadData(), 60 * 60 * 1000);
+            pricingLastUpdated = dateTimeNow;
         } catch (e) {
             pricesUpdatingError = true;
-
-            // Update data in a few seconds
-            setTimeout(() => loadData(), 10*1000);
         }
 
-        pricesUpdating = false; 
+        pricesUpdating = false;
     }
+
+    /**
+     * Update pricing when...
+     * - there could be new data
+     * - there's been an error
+     * - page has been idle in background
+     */
+    const heartbeat = function() {
+        // Don't try if we've not done an inital load
+        if (!pricingLastUpdated) {
+            return;
+        }
+
+        const now = DateTime.now();
+
+        // Don't update more than once every few minutes
+        const { minutes } = pricingLastUpdated.diff(now, 'hours').toObject();
+        if (minutes && minutes < 10) {
+            return;
+        }
+
+        // Only update if last future price is less than 8 hours away
+        // 8 comes from the price update window being from 16:00 and a day being 24 hours
+        const lastPrice = pricing.at(-1);
+        if (lastPrice) {
+            const { hours } = lastPrice.validFrom.diff(now, 'hours').toObject();
+            if (hours && hours < 8) {
+                loadData();
+            }
+        } else {
+            loadData();
+        }
+    }
+
+    // Heartbeat once a minute
+    setInterval(() => { heartbeat()}, 10 * 1000);
+
 </script>
 
 <svelte:head>
@@ -105,7 +133,7 @@
 
     <h2>How To Get Agile Octopus?</h2>
     <ol>
-        <li><a href="https://share.octopus.energy/sunny-river-570" target="_blank">Switch to Octopus Energy</a> and get £50 free credit!</li> 
+        <li><a href="https://share.octopus.energy/sunny-river-570" target="_blank">Switch to Octopus Energy</a> and get £50 free credit!</li>
         <li>After the switch has completed, visit <a href="https://octopus.energy/smart/agile/" target="_blank">Agile Octpus</a> to sign up.</li>
     </ol>
 
@@ -120,11 +148,11 @@
     <small>
         <a href="#top" class="text-body-secondary"><i class="fa-solid fa-house"></i></a>
         <i class="fa-solid fa-bolt fa-2xs"></i>
-        <a href="#region" class="text-body-secondary">Region</a> 
+        <a href="#region" class="text-body-secondary">Region</a>
         <i class="fa-solid fa-bolt fa-2xs"></i>
-        <a href="#pricing-table" class="text-body-secondary">Pricing</a> 
+        <a href="#pricing-table" class="text-body-secondary">Pricing</a>
         <i class="fa-solid fa-bolt fa-2xs"></i>
-        <a href="#about" class="text-body-secondary">FAQs</a> 
+        <a href="#about" class="text-body-secondary">FAQs</a>
         <i class="fa-solid fa-bolt fa-2xs"></i>
         <a href="#price-cap" class="text-body-secondary">Price Cap</a>
     </small>
@@ -143,6 +171,7 @@
         z-index: 10;
         background-color: rgb(33, 37, 41);
     }
+
     #nav-bar a {
         color: White;
     }

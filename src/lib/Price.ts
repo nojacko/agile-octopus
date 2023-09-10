@@ -4,14 +4,20 @@ import { importColor, exportColor } from "$lib/colors";
 class Price {
     validFrom: DateTime;
     validTo: DateTime;
-    readableDate: string;
-    fullReadableDate: string;
     import: number;
     export: number;
 
     isNow() {
         const now = DateTime.now();
         return (this.validFrom < now && this.validTo > now);
+    }
+
+    readableTime(): string {
+        return this.validFrom.toFormat("t");
+    }
+
+    fullReadableDate(): string {
+        return this.validFrom.toFormat("DDDD");
     }
 
     isFuture() {
