@@ -119,7 +119,7 @@
     <meta name="description" content="Quickly see the upcoming electricity prices for Octopus Energy's Agile Octopus tariff." />
 </svelte:head>
 
-<div class="container mb-2 mx-auto">
+<div class="container mb-4 mx-auto">
     <h1 class="text-center">Agile Octopus Price Tracker</h1>
     <p>
         Quickly see the upcoming electricity prices for Octopus Energy's <a href="#about">Agile Octopus</a> tariff.
@@ -129,15 +129,15 @@
     <RegionSelect bind:region={region} />
 </div>
 
-<div class="container mb-2 mx-auto">
+<div class="container mb-4 mx-auto">
     <ul id="pricing-table" class="nav nav-underline nav-fill mb-2">
         <li class="nav-item p-0">
-            <button class="nav-link p-1 {(pricingTab === PRICE_TAB_UPCOMING) ? "active" : ""}"
-                on:click={() => { pricingTab = PRICE_TAB_UPCOMING }}>Upcoming</button>
+            <a  href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_UPCOMING) ? "active" : ""}"
+                on:click={() => { pricingTab = PRICE_TAB_UPCOMING }}>Upcoming</a>
         </li>
         <li class="nav-item p-0">
-            <button class="nav-link p-1 {(pricingTab === PRICE_TAB_LAST_WEEK) ? "active" : ""}"
-                on:click={() => { pricingTab = PRICE_TAB_LAST_WEEK }}>Last Week</button>
+            <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_LAST_WEEK) ? "active" : ""}"
+                on:click={() => { pricingTab = PRICE_TAB_LAST_WEEK }}>Last Week</a>
         </li>
     </ul>
 
@@ -149,7 +149,7 @@
     {/if}
 </div>
 
-<div class="container mb-2 mx-auto">
+<div class="container mb-4 mx-auto">
     <h2 id="about">What Is Agile Octopus?</h2>
     <p>With Agile Octopus, you get access to half-hourly energy prices, tied to wholesale prices and updated daily. So when wholesale electricity prices drop, so do your bills - and if you can shift your daily electricity use outside of peak times, you can save even more.</p>
     <p>Agile Octopus includes Plunge Pricing that lets you take advantage of these negative price events, and get paid for the electricity you use!</p>
