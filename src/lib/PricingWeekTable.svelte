@@ -32,7 +32,7 @@
             const unixInt = price.validFrom.toUnixInteger();
             if (unixInt >= start.toUnixInteger() && unixInt <= end.toUnixInteger()) {
                 const day = price.validFrom.toFormat("ccc")
-                const halfHour = price.validFrom.toFormat("HHmm");
+                const halfHour = price.validFrom.toFormat("HH:mm");
                 _days.add(day);
                 _halfHours.add(halfHour);
 
@@ -94,7 +94,7 @@
     {/each}
 </div>
 
-<div class="row justify-content-center font-monospace text-end mb-2">
+<div class="row justify-content-center font-monospace text-end mb-1">
     <div class="col ps-0 pe-1"><small>Low</small></div>
     {#each days.values() as day}
         {@const val = dayLow[`${day}`]}

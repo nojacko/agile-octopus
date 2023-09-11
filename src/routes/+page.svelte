@@ -121,13 +121,13 @@
     <meta name="description" content="Quickly see the upcoming electricity prices for Octopus Energy's Agile Octopus tariff." />
 </svelte:head>
 
-<h1 class="text-center display-1 fs-1 text-light">Agile Octopus Price Tracker</h1>
+<h1 class="text-center display-1 fs-1 text-light mx-1">Agile Octopus Price Tracker</h1>
 
-<div class="container mb-4 mx-auto">
-    <p>
+<div class="container mb-4 mx-auto text-center">
+    <p class="text-body-emphasis">
         Quickly see the upcoming electricity prices for Octopus Energy's <a href="#about">Agile Octopus</a> tariff.
-        <a href="#about">More information</a>.
     </p>
+    <p><a href="#about" class="btn btn-outline-light btn-sm">Learn more</a></p>
 
     <RegionSelect bind:region={region} />
 </div>
@@ -135,11 +135,11 @@
 <div class="container mb-4 mx-auto">
     <ul id="pricing-table" class="nav nav-underline nav-fill mb-2">
         <li class="nav-item p-0">
-            <a  href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_UPCOMING) ? "active" : ""}"
+            <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_UPCOMING) ? "active" : "text-body-emphasis"}"
                 on:click={() => { pricingTab = PRICE_TAB_UPCOMING }}>Upcoming</a>
         </li>
         <li class="nav-item p-0">
-            <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_LAST_WEEK) ? "active" : ""}"
+            <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_LAST_WEEK) ? "active" : "text-body-emphasis"}"
                 on:click={() => { pricingTab = PRICE_TAB_LAST_WEEK }}>Last Week</a>
         </li>
     </ul>
