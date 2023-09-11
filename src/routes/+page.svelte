@@ -168,7 +168,7 @@
     <p>With Agile Octopus, you get access to half-hourly energy prices, tied to wholesale prices and updated daily. So when wholesale electricity prices drop, so do your bills - and if you can shift your daily electricity use outside of peak times, you can save even more.</p>
     <p>Agile Octopus includes Plunge Pricing that lets you take advantage of these negative price events, and get paid for the electricity you use!</p>
 
-    <h2 class="{h2Class}">How To Get Agile Octopus?</h2>
+    <h2 id="how-to-get-agile" class="{h2Class}">How To Get Agile Octopus?</h2>
     <p>Switch to <a href="https://share.octopus.energy/sunny-river-570" target="_blank">Octopus Energy</a> and get £50 free credit!</p>
     <p>After the switch has completed, visit <a href="https://octopus.energy/smart/agile/" target="_blank">Agile Octpus</a> to sign up.</p>
 
@@ -182,7 +182,7 @@
     </p>
     <p>
         <span class="text-info-emphasis"><i class="fa-solid fa-wind text-info-emphasis"></i> Check the weather!</span>
-        Wind power is the UK's largest source renewable energy. If it's going to be windy prices <em>should</em> drop.
+        Wind power is the UK's largest source of renewable energy. If it's going to be windy prices <em>should</em> drop.
     </p>
 
     <h2 class="{h2Class}">Price Cap</h2>
@@ -209,13 +209,13 @@
         <i class="fa-solid fa-bolt fa-2xs"></i>
         <a href="#about">FAQs</a>
         <i class="fa-solid fa-bolt fa-2xs"></i>
-        <a href="#join" class="text-warning-emphasis">Free &pound;50!</a>
+        <a href="#how-to-get-agile" class="text-warning-emphasis">Free &pound;50!</a>
     </small>
 </div>
 
 <style>
     .container {
-        max-width: 30rem;
+        max-width: 36rem;
     }
 
     #nav-bar {
