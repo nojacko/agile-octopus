@@ -68,7 +68,7 @@
             // Sort into an array
             let _pricing: Price[] = Object.keys(pricingHash).map((key) => pricingHash[key]);
             _pricing.sort((a, b) => (a.validFrom.toUnixInteger() - b.validFrom.toUnixInteger()));
-            setTimeout(() => { pricing = _pricing; }, 1000*1000);
+            pricing = _pricing;
 
             pricingLastUpdated = dateTimeNow;
         } catch (e) {
