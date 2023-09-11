@@ -191,7 +191,7 @@
     <p>
         The <u>{defaultPriceCap}p</u> electricity price cap is set by <a href="https://www.ofgem.gov.uk/information-consumers/energy-advice-households/energy-price-cap" target="_blank">Ofgem</a>.
         <span class="text-danger-emphasis">Agile prices can go above the price cap!</span>
-        When this happens, you'll see <IconAboveCap /> exclamation icon.
+        When this happens, you'll see an <IconAboveCap /> exclamation icon.
         You can change the cap below.
     </p>
     <PriceCapInput bind:priceCap={priceCap} defaultPriceCap={defaultPriceCap}></PriceCapInput>
