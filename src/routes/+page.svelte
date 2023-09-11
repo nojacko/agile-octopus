@@ -134,14 +134,14 @@
     <RegionSelect bind:region={region} />
 </div>
 
-<div class="container mb-4 mx-auto">
+<div id="pricing-table" class="container mb-4 mx-auto">
     {#if pricing.length == 0}
         <div class="alert alert-dark text-center" role="alert">
             <p class="fs-1 mb-2 text-warning-emphasis"><IconLoading /> Loading Pricing <IconLoading /></p>
             <p class="mb-0">Getting the most recent pricing from Octopus Energy</p>
         </div>
     {:else}
-        <ul id="pricing-table" class="nav nav-underline nav-fill mb-2">
+        <ul class="nav nav-underline nav-fill mb-2">
             <li class="nav-item p-0">
                 <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_UPCOMING) ? "active" : "text-body-emphasis"}"
                     on:click={() => { pricingTab = PRICE_TAB_UPCOMING }}>Upcoming</a>
