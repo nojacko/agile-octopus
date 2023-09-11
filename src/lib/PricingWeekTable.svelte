@@ -78,7 +78,7 @@
 </div>
 
 <div class="row justify-content-center font-monospace text-end">
-    <div class="col ps-0 pe-1"><small>High</small></div>
+    <div class="col ps-0 pe-1 text-center"><small>High</small></div>
     {#each days.values() as day}
         {@const val = dayHigh[`${day}`]}
         <div class="col ps-0 pe-1 " style="background-color: {importColor(val, priceCap)}; color: Black;">
@@ -87,7 +87,7 @@
     {/each}
 </div>
 <div class="row justify-content-center font-monospace text-end">
-    <div class="col ps-0 pe-1"><small>Avg</small></div>
+    <div class="col ps-0 pe-1 text-center"><small>Avg</small></div>
     {#each days.values() as day}
         {@const val = dayAvg[`${day}`]}
         <div class="col ps-0 pe-1 " style="background-color: {importColor(val, priceCap)}; color: Black;">
@@ -97,7 +97,7 @@
 </div>
 
 <div class="row justify-content-center font-monospace text-end mb-1">
-    <div class="col ps-0 pe-1"><small>Low</small></div>
+    <div class="col ps-0 pe-1 text-center"><small>Low</small></div>
     {#each days.values() as day}
         {@const val = dayLow[`${day}`]}
         <div class="col ps-0 pe-1 " style="background-color: {importColor(val, priceCap)}; color: Black;">
