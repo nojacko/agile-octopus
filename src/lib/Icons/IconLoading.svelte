@@ -1,1 +1,1 @@
-<i class="fa-solid fa-bolt fa-beat" style="color: Gold"></i>
+<i class="fa-solid fa-bolt fa-beat text-warning-emphasis"></i>

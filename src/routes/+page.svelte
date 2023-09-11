@@ -15,6 +15,7 @@
 
     const PRICE_TAB_UPCOMING = "upcoming";
     const PRICE_TAB_LAST_WEEK = "last-week";
+    const h2Class= "display-1 fs-3 text-light";
 
     let region: string;
     let priceCap: number = defaultPriceCap;
@@ -120,8 +121,9 @@
     <meta name="description" content="Quickly see the upcoming electricity prices for Octopus Energy's Agile Octopus tariff." />
 </svelte:head>
 
+<h1 class="text-center display-1 fs-1 text-light">Agile Octopus Price Tracker</h1>
+
 <div class="container mb-4 mx-auto">
-    <h1 class="text-center">Agile Octopus Price Tracker</h1>
     <p>
         Quickly see the upcoming electricity prices for Octopus Energy's <a href="#about">Agile Octopus</a> tariff.
         <a href="#about">More information</a>.
@@ -153,32 +155,31 @@
 <div class="container mb-4 mx-auto">
     <OctopusAd />
 
-    <h2 id="about">What Is Agile Octopus?</h2>
+    <h2 id="about" class="{h2Class}">What Is Agile Octopus?</h2>
     <p>With Agile Octopus, you get access to half-hourly energy prices, tied to wholesale prices and updated daily. So when wholesale electricity prices drop, so do your bills - and if you can shift your daily electricity use outside of peak times, you can save even more.</p>
     <p>Agile Octopus includes Plunge Pricing that lets you take advantage of these negative price events, and get paid for the electricity you use!</p>
 
-    <h2>How To Get Agile Octopus?</h2>
-    <ol>
-        <li><a href="https://share.octopus.energy/sunny-river-570" target="_blank">Switch to Octopus Energy</a> and get £50 free credit!</li>
-        <li>After the switch has completed, visit <a href="https://octopus.energy/smart/agile/" target="_blank">Agile Octpus</a> to sign up.</li>
-    </ol>
+    <h2 class="{h2Class}">How To Get Agile Octopus?</h2>
+    <p>Switch to <a href="https://share.octopus.energy/sunny-river-570" target="_blank" class="text-warning-emphasis">Octopus Energy</a> and get £50 free credit!</p>
+    <p>After the switch has completed, visit <a href="https://octopus.energy/smart/agile/" target="_blank">Agile Octpus</a> to sign up.</p>
 
+    <OctopusAd />
 
-    <h2>Cheapest Electricity?</h2>
+    <h2 class="{h2Class}">Cheapest Electricity?</h2>
     <p>Generally, weekends are the cheapest. Daily, around <u>12am to 5am</u> is usually cheapest. Early afternoon around <u>12pm to 3pm</u> can be cheap too.</p>
     <p>
-        <span class="text-warning-emphasis"><i class="fa-solid fa-triangle-exclamation"></i> Electricity prices can fluctuate!</span>
+        <span class="text-danger-emphasis"><i class="fa-solid fa-triangle-exclamation"></i> Electricity prices can fluctuate!</span>
         Anything from changes in natural gas global prices, power plant maintenance, weather conditions, and many others reasons.
     </p>
     <p>
         <span class="text-info-emphasis"><i class="fa-solid fa-wind text-info-emphasis"></i> Check the weather!</span>
-        Wind power is the UK's largest renewable source so if it's going to be windy prices <em>should</em> drop.
+        Wind power is the UK's largest source renewable energy. If it's going to be windy prices <em>should</em> drop.
     </p>
 
-    <h2>Price Cap</h2>
+    <h2 class="{h2Class}">Price Cap</h2>
     <p>
         The <u>{defaultPriceCap}p</u> electricity price cap is set by <a href="https://www.ofgem.gov.uk/information-consumers/energy-advice-households/energy-price-cap" target="_blank">Ofgem</a>.
-        <span class="text-warning-emphasis">Agile prices can go above the price cap!</span>
+        <span class="text-danger-emphasis">Agile prices can go above the price cap!</span>
         When this happens, you'll see <IconAboveCap />.
         You can change the cap below.
     </p>
@@ -199,7 +200,7 @@
         <i class="fa-solid fa-bolt fa-2xs"></i>
         <a href="#about">FAQs</a>
         <i class="fa-solid fa-bolt fa-2xs"></i>
-        <a href="#join" style="color: Gold;">Free &pound;50!</a>
+        <a href="#join" class="text-warning-emphasis">Free &pound;50!</a>
     </small>
 </div>
 
@@ -219,8 +220,5 @@
 
     #nav-bar a {
         color: White;
-    }
-    #nav-bar a.join {
-        color: Gold;
     }
 </style>
