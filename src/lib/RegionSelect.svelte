@@ -1,8 +1,10 @@
 <script lang="ts">
 	import { onMount } from "svelte";
     import { browser } from "$app/environment";
-    import regions, { validRegion } from "./regions";
-	import IconLoading from "./Icons/IconLoading.svelte";
+
+    import regions, { validRegion } from "$lib/regions";
+	import IconLoading from "$lib/Icons/IconLoading.svelte";
+
     export let region: string;
 
     const defaultRegion = "B";
@@ -74,7 +76,7 @@
     });
 </script>
 
-<div id="region" class="py-2">
+<div id="region">
     <div class="input-group">
         <label class="input-group-text" for="region-select">Region</label>
         <select bind:value={region} class="form-select" id="region-select">
@@ -93,7 +95,7 @@
             <div class="card-body">
                 <button type="button" class="btn btn-outline-secondary btn-sm float-end" on:click={() => { showLookup = false; }}><i class="fa-solid fa-xmark"></i></button>
 
-                <h2 class="card-title">Lookup Your Region</h2>
+                <p class="card-title fw-bold">Lookup Your Region</p>
                 <p>Enter your postcode to find your region.</p>
 
                 {#if lookupLoading}

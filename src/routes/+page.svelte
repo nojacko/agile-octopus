@@ -3,8 +3,8 @@
     import { validRegion } from "$lib/regions";
     import { defaultPriceCap } from "$lib/price-cap";
     import type PricingHash from "$lib/PricesHash";
-
 	import IconAboveCap from "$lib/Icons/IconAboveCap.svelte";
+    import IconLoading from "$lib/Icons/IconLoading.svelte";
 	import PriceCapInput from "$lib/PriceCapInput.svelte";
 	import PricingTableFooter from "$lib/PricingTableFooter.svelte";
 	import PricingWeekTable from "$lib/PricingWeekTable.svelte";
@@ -68,7 +68,7 @@
             // Sort into an array
             let _pricing: Price[] = Object.keys(pricingHash).map((key) => pricingHash[key]);
             _pricing.sort((a, b) => (a.validFrom.toUnixInteger() - b.validFrom.toUnixInteger()));
-            pricing = _pricing;
+            setTimeout(() => { pricing = _pricing; }, 1000*1000);
 
             pricingLastUpdated = dateTimeNow;
         } catch (e) {
@@ -123,32 +123,41 @@
 
 <h1 class="text-center display-1 fs-1 text-light mx-1">Agile Octopus Price Tracker</h1>
 
-<div class="container mb-4 mx-auto text-center">
-    <p class="text-body-emphasis">
+<div class="container mb-4 mx-auto">
+    <p class="text-body-emphasis text-center">
         Quickly see the upcoming electricity prices for Octopus Energy's <a href="#about">Agile Octopus</a> tariff.
     </p>
-    <p><a href="#about" class="btn btn-outline-light btn-sm">Learn more</a></p>
+    <p class="text-center">
+        <a href="#about" class="btn btn-outline-light btn-sm">Learn more</a>
+    </p>
 
     <RegionSelect bind:region={region} />
 </div>
 
 <div class="container mb-4 mx-auto">
-    <ul id="pricing-table" class="nav nav-underline nav-fill mb-2">
-        <li class="nav-item p-0">
-            <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_UPCOMING) ? "active" : "text-body-emphasis"}"
-                on:click={() => { pricingTab = PRICE_TAB_UPCOMING }}>Upcoming</a>
-        </li>
-        <li class="nav-item p-0">
-            <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_LAST_WEEK) ? "active" : "text-body-emphasis"}"
-                on:click={() => { pricingTab = PRICE_TAB_LAST_WEEK }}>Last Week</a>
-        </li>
-    </ul>
-
-    {#if pricingTab === PRICE_TAB_LAST_WEEK}
-        <PricingWeekTable pricing={pricing} priceCap={priceCap} />
+    {#if pricing.length == 0}
+        <div class="alert alert-dark text-center" role="alert">
+            <p class="fs-1 mb-2 text-warning-emphasis"><IconLoading /> Loading Pricing <IconLoading /></p>
+            <p class="mb-0">Getting the most recent pricing from Octopus Energy</p>
+        </div>
     {:else}
-        <PricingTable pricing={pricing} priceCap={priceCap} />
-        <PricingTableFooter initialLoad={pricing.length == 0} updating={pricesUpdating} error={pricesUpdatingError} />
+        <ul id="pricing-table" class="nav nav-underline nav-fill mb-2">
+            <li class="nav-item p-0">
+                <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_UPCOMING) ? "active" : "text-body-emphasis"}"
+                    on:click={() => { pricingTab = PRICE_TAB_UPCOMING }}>Upcoming</a>
+            </li>
+            <li class="nav-item p-0">
+                <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_LAST_WEEK) ? "active" : "text-body-emphasis"}"
+                    on:click={() => { pricingTab = PRICE_TAB_LAST_WEEK }}>Last Week</a>
+            </li>
+        </ul>
+
+        {#if pricingTab === PRICE_TAB_LAST_WEEK}
+            <PricingWeekTable pricing={pricing} priceCap={priceCap} />
+        {:else}
+            <PricingTable pricing={pricing} priceCap={priceCap} />
+            <PricingTableFooter updating={pricesUpdating} error={pricesUpdatingError} />
+        {/if}
     {/if}
 </div>
 

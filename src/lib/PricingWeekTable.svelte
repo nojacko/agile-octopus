@@ -1,10 +1,12 @@
 <script lang="ts">
     import { onMount } from "svelte";
 	import { DateTime } from "luxon";
-    import type Price from "./Price";
+
+    import type Price from "$lib/Price";
     import { round } from "$lib/maths";
     import { importColor } from "$lib/colors";
-	import type PricingHash from "./PricesHash";
+	import type PricingHash from "$lib/PricesHash";
+
     export let pricing: Price[] = [];
     export let priceCap: number;
 

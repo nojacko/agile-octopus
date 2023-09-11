@@ -1,4 +1,4 @@
-import Price from "./Price";
+import Price from "$lib/Price";
 
 interface PricingHash { [key: string]: Price; };
 

@@ -1,7 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import type Price from "./Price";
 	import { DateTime } from "luxon";
+
+    import type Price from "$lib/Price";
 	import IconAboveCap from "$lib/Icons/IconAboveCap.svelte";
 	import IconImportLowest from "$lib/Icons/IconImportLowest.svelte";
 	import IconImportPaid from "$lib/Icons/IconImportPaid.svelte";
