@@ -164,11 +164,11 @@
 </div>
 
 <div class="container mb-4 mx-auto">
-    <OctopusAd />
-
     <h2 id="about" class="{h2Class}">What Is Agile Octopus?</h2>
     <p>With <a href="{OCTOPUS_LINK}" target="_blank">Agile Octopus</a>, you get access to half-hourly energy prices, tied to wholesale prices and updated daily. So when wholesale electricity prices drop, so do your bills - and if you can shift your daily electricity use outside of peak times, you can save even more.</p>
     <p><a href="{OCTOPUS_LINK}" target="_blank">Agile Octopus</a> includes Plunge Pricing that lets you take advantage of these negative price events, and get paid for the electricity you use!</p>
+
+    <OctopusAd />
 
     <h2 id="how-to-get-agile" class="{h2Class}">How To Get Agile Octopus?</h2>
     <p>Switch to <a href="{OCTOPUS_LINK}" target="_blank">Octopus Energy</a> and get £50 free credit!</p>
