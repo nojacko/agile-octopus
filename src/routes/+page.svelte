@@ -169,7 +169,7 @@
     <p>Agile Octopus includes Plunge Pricing that lets you take advantage of these negative price events, and get paid for the electricity you use!</p>
 
     <h2 class="{h2Class}">How To Get Agile Octopus?</h2>
-    <p>Switch to <a href="https://share.octopus.energy/sunny-river-570" target="_blank" class="text-warning-emphasis">Octopus Energy</a> and get £50 free credit!</p>
+    <p>Switch to <a href="https://share.octopus.energy/sunny-river-570" target="_blank">Octopus Energy</a> and get £50 free credit!</p>
     <p>After the switch has completed, visit <a href="https://octopus.energy/smart/agile/" target="_blank">Agile Octpus</a> to sign up.</p>
 
     <OctopusAd />
