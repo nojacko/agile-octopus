@@ -1,5 +1,7 @@
 <script lang="ts">
     import { DateTime } from "luxon";
+
+    import { OCTOPUS_LINK } from "$lib/vars";
     import { validRegion } from "$lib/regions";
     import { defaultPriceCap } from "$lib/price-cap";
     import type PricingHash from "$lib/PricesHash";
@@ -15,7 +17,7 @@
 
     const PRICE_TAB_UPCOMING = "upcoming";
     const PRICE_TAB_LAST_WEEK = "last-week";
-    const h2Class= "display-1 fs-3 text-light";
+    const h2Class = "display-1 fs-3 text-light";
 
     let region: string;
     let priceCap: number = defaultPriceCap;
@@ -165,12 +167,12 @@
     <OctopusAd />
 
     <h2 id="about" class="{h2Class}">What Is Agile Octopus?</h2>
-    <p>With Agile Octopus, you get access to half-hourly energy prices, tied to wholesale prices and updated daily. So when wholesale electricity prices drop, so do your bills - and if you can shift your daily electricity use outside of peak times, you can save even more.</p>
-    <p>Agile Octopus includes Plunge Pricing that lets you take advantage of these negative price events, and get paid for the electricity you use!</p>
+    <p>With <a href="{OCTOPUS_LINK}" target="_blank">Agile Octopus</a>, you get access to half-hourly energy prices, tied to wholesale prices and updated daily. So when wholesale electricity prices drop, so do your bills - and if you can shift your daily electricity use outside of peak times, you can save even more.</p>
+    <p><a href="{OCTOPUS_LINK}" target="_blank">Agile Octopus</a> includes Plunge Pricing that lets you take advantage of these negative price events, and get paid for the electricity you use!</p>
 
     <h2 id="how-to-get-agile" class="{h2Class}">How To Get Agile Octopus?</h2>
-    <p>Switch to <a href="https://share.octopus.energy/sunny-river-570" target="_blank">Octopus Energy</a> and get £50 free credit!</p>
-    <p>After the switch has completed, visit <a href="https://octopus.energy/smart/agile/" target="_blank">Agile Octpus</a> to sign up.</p>
+    <p>Switch to <a href="{OCTOPUS_LINK}" target="_blank">Octopus Energy</a> and get £50 free credit!</p>
+    <p>After the switch has completed, visit <a href="https://octopus.energy/smart/agile/" target="_blank">Agile Octopus</a> to sign up.</p>
 
     <OctopusAd />
 
@@ -189,7 +191,7 @@
     <p>
         The <u>{defaultPriceCap}p</u> electricity price cap is set by <a href="https://www.ofgem.gov.uk/information-consumers/energy-advice-households/energy-price-cap" target="_blank">Ofgem</a>.
         <span class="text-danger-emphasis">Agile prices can go above the price cap!</span>
-        When this happens, you'll see <IconAboveCap />.
+        When this happens, you'll see <IconAboveCap /> exclamation icon.
         You can change the cap below.
     </p>
     <PriceCapInput bind:priceCap={priceCap} defaultPriceCap={defaultPriceCap}></PriceCapInput>
