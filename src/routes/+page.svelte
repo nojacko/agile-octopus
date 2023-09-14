@@ -41,8 +41,8 @@
 
         // No pricing? Load from storage
         if (pricing.length === 0) {
-            let importJsonStr = LocalStorage.getItem("importJson");
-            let exportJsonStr = LocalStorage.getItem("exportJson");
+            let importJsonStr = LocalStorage.getItem(`emportJson-${region}`);
+            let exportJsonStr = LocalStorage.getItem(`exportJson-${region}`);;
 
             if (importJsonStr && exportJsonStr) {
                 pricing = OctopusApi.jsonToPriceArray(JSON.parse(importJsonStr), JSON.parse(exportJsonStr));
@@ -58,8 +58,8 @@
                 now.plus({day: 1}).endOf("day")
             );
 
-            LocalStorage.setItem("importJson", JSON.stringify(importJson));
-            LocalStorage.setItem("exportJson", JSON.stringify(importJson));
+            LocalStorage.setItem(`importJson-${region}`, JSON.stringify(importJson));
+            LocalStorage.setItem(`exportJson-${region}`, JSON.stringify(importJson));
 
             pricing = OctopusApi.jsonToPriceArray(importJson, exportJson);
 
