@@ -1,15 +1,15 @@
 <script lang="ts">
     import { DateTime } from "luxon";
 
-    import { OCTOPUS_LINK } from "$lib/vars";
-    import { validRegion } from "$lib/regions";
-    import { defaultPriceCap } from "$lib/price-cap";
-    import type PricingHash from "$lib/PricesHash";
 	import IconAboveCap from "$lib/Icons/IconAboveCap.svelte";
-    import IconLoading from "$lib/Icons/IconLoading.svelte";
 	import PriceCapInput from "$lib/PriceCapInput.svelte";
 	import PricingTableFooter from "$lib/PricingTableFooter.svelte";
 	import PricingWeekTable from "$lib/PricingWeekTable.svelte";
+    import { defaultPriceCap } from "$lib/price-cap";
+    import { fetchAgileData } from "$lib/octopus-api";
+    import { OCTOPUS_LINK } from "$lib/vars";
+    import { validRegion } from "$lib/regions";
+    import IconLoading from "$lib/Icons/IconLoading.svelte";
     import OctopusAd from "$lib/OctopusAd.svelte";
     import Price from "$lib/Price";
     import PricingTable from "$lib/PricingTable.svelte";
@@ -38,41 +38,14 @@
         pricesUpdatingError = false;
 
         try {
-            const dateTimeNow = DateTime.now();
-            const periodFrom = dateTimeNow.minus({day: 14}).startOf("day");
-            const periodTo = dateTimeNow.plus({day: 1}).endOf("day");
-            const baseUrl = "https://api.octopus.energy/v1/products";
-            const importUrl = `${baseUrl}/AGILE-FLEX-22-11-25/electricity-tariffs/E-1R-AGILE-FLEX-22-11-25-${region}/standard-unit-rates/?page_size=1500&period_from=${periodFrom.toUTC().toISO()}&period_to=${periodTo.toUTC().toISO()}`;
-            const exportUrl = `${baseUrl}/AGILE-OUTGOING-19-05-13/electricity-tariffs/E-1R-AGILE-OUTGOING-19-05-13-${region}/standard-unit-rates/?page_size=1500&period_from=${periodFrom.toUTC().toISO()}&period_to=${periodTo.toUTC().toISO()}`;
+            const now = DateTime.now();
+            pricing = await fetchAgileData(
+                region,
+                now.minus({day: 14}).startOf("day"),
+                now.plus({day: 1}).endOf("day")
+            );
 
-            const importResp = await fetch(importUrl);
-            const exportResp = await fetch(exportUrl);
-            const importJson = await importResp.json();
-            const exportJson = await exportResp.json();
-
-            const pricingHash: PricingHash = {}
-
-            for (const item of importJson.results) {
-                const price = new Price();
-                price.validFrom = DateTime.fromISO(item.valid_from);
-                price.validTo = DateTime.fromISO(item.valid_to);
-                price.import = Math.round(item.value_inc_vat * 10) / 10;
-                pricingHash[item.valid_from] = price;
-            }
-
-            for (const item of exportJson.results) {
-                const price = pricingHash[item.valid_from];
-                if (price) {
-                    price.export = Math.round(item.value_inc_vat * 10) / 10;
-                }
-            }
-
-            // Sort into an array
-            let _pricing: Price[] = Object.keys(pricingHash).map((key) => pricingHash[key]);
-            _pricing.sort((a, b) => (a.validFrom.toUnixInteger() - b.validFrom.toUnixInteger()));
-            pricing = _pricing;
-
-            pricingLastUpdated = dateTimeNow;
+            pricingLastUpdated = now;
         } catch (e) {
             pricesUpdatingError = true;
         }

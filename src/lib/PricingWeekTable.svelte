@@ -2,17 +2,16 @@
     import { onMount } from "svelte";
 	import { DateTime } from "luxon";
 
-    import type Price from "$lib/Price";
-    import { round } from "$lib/maths";
     import { importColor } from "$lib/colors";
-	import type PricingHash from "$lib/PricesHash";
+    import { round } from "$lib/maths";
+    import Price, { type PriceHash } from "$lib/Price"
 
     export let pricing: Price[] = [];
     export let priceCap: number;
 
     $: pricing && processPricing();
 
-    let processedPricing: { [key: string]: PricingHash } = {};
+    let processedPricing: { [key: string]: PriceHash } = {};
     let days = new Set();
     let halfHours = new Set();
 

@@ -1,6 +1,8 @@
 import { DateTime } from "luxon";
 import { importColor, exportColor } from "$lib/colors";
 
+export interface PriceHash { [key: string]: Price; };
+
 class Price {
     validFrom: DateTime;
     validTo: DateTime;
