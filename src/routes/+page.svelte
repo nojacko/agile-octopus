@@ -9,7 +9,6 @@
     import { defaultRegion } from "$lib/regions";
     import { OCTOPUS_LINK } from "$lib/vars";
     import { validRegion } from "$lib/regions";
-    import IconLoading from "$lib/Icons/IconLoading.svelte";
     import LocalStorage from "$lib/local-storage";
     import OctopusAd from "$lib/OctopusAd.svelte";
     import OctopusApi from "$lib/octopus-api";
@@ -23,30 +22,34 @@
 
     let region: string;
     let priceCap: number = defaultPriceCap;
-    let pricing: Price[] = [];
-    let pricesUpdating = false;
+    let pricing: { [key: string]: Price[]; } = {};
+    let pricesUpdating = true;
     let pricingLastUpdated: DateTime;
     let pricingTab = PRICE_TAB_UPCOMING;
 
     $: region, loadData();
 
     const loadData = async function() {
-        if (!validRegion(region) || pricesUpdating) {
+        if (!validRegion(region)) {
             return;
         }
 
-        LocalStorage.setItem("region", region);
-
         pricesUpdating = true;
 
-        // No pricing? Load from storage
-        if (pricing.length === 0) {
-            let importJsonStr = LocalStorage.getItem(`emportJson-${region}`);
-            let exportJsonStr = LocalStorage.getItem(`exportJson-${region}`);;
+        LocalStorage.setItem("region", region);
 
-            if (importJsonStr && exportJsonStr) {
-                pricing = OctopusApi.jsonToPriceArray(JSON.parse(importJsonStr), JSON.parse(exportJsonStr));
-            }
+        if (!pricing.hasOwnProperty(region)) {
+            pricing[region] = [];
+            pricing = pricing;
+        }
+
+        // No pricing? Load from storage
+        let importJsonStr = LocalStorage.getItem(`importJson-${region}`);
+        let exportJsonStr = LocalStorage.getItem(`exportJson-${region}`);
+
+        if (importJsonStr && exportJsonStr) {
+            pricing[region] = OctopusApi.jsonToPriceArray(JSON.parse(importJsonStr), JSON.parse(exportJsonStr));
+            pricing = pricing;
         }
 
         // Update the data
@@ -59,9 +62,10 @@
             );
 
             LocalStorage.setItem(`importJson-${region}`, JSON.stringify(importJson));
-            LocalStorage.setItem(`exportJson-${region}`, JSON.stringify(importJson));
+            LocalStorage.setItem(`exportJson-${region}`, JSON.stringify(exportJson));
 
-            pricing = OctopusApi.jsonToPriceArray(importJson, exportJson);
+            pricing[region] = OctopusApi.jsonToPriceArray(importJson, exportJson);
+            pricing = pricing;
 
             pricingLastUpdated = now;
         } catch (e) {
@@ -93,7 +97,7 @@
 
         // Only update if last future price is less than 8 hours away
         // 8 comes from the price update window being from 16:00 and a day being 24 hours
-        const lastPrice = pricing.at(-1);
+        const lastPrice = pricing[region].at(-1);
         if (lastPrice) {
             const { hours } = lastPrice.validFrom.diff(now, 'hours').toObject();
             if (hours && hours < 8) {
@@ -129,28 +133,21 @@
 </div>
 
 <div id="pricing-table" class="container mb-4 mx-auto">
-    {#if pricing.length && validRegion(region)}
-        <ul class="nav nav-underline nav-fill mb-2">
-            <li class="nav-item p-0">
-                <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_UPCOMING) ? "active" : "text-body-emphasis"}"
-                    on:click={() => { pricingTab = PRICE_TAB_UPCOMING }}>Upcoming</a>
-            </li>
-            <li class="nav-item p-0">
-                <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_LAST_WEEK) ? "active" : "text-body-emphasis"}"
-                    on:click={() => { pricingTab = PRICE_TAB_LAST_WEEK }}>Last Week</a>
-            </li>
-        </ul>
+    <ul class="nav nav-underline nav-fill mb-2">
+        <li class="nav-item p-0">
+            <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_UPCOMING) ? "active" : "text-body-emphasis"}"
+                on:click={() => { pricingTab = PRICE_TAB_UPCOMING }}>Upcoming</a>
+        </li>
+        <li class="nav-item p-0">
+            <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_LAST_WEEK) ? "active" : "text-body-emphasis"}"
+                on:click={() => { pricingTab = PRICE_TAB_LAST_WEEK }}>Last Week</a>
+        </li>
+    </ul>
 
-        {#if pricingTab === PRICE_TAB_LAST_WEEK}
-            <PricingWeekTable pricing={pricing} priceCap={priceCap} />
-        {:else}
-            <PricingTable pricing={pricing} priceCap={priceCap} updating={pricesUpdating} />
-        {/if}
+    {#if pricingTab === PRICE_TAB_LAST_WEEK}
+        <PricingWeekTable pricing={pricing[region]} priceCap={priceCap} updating={pricesUpdating} />
     {:else}
-        <div class="alert alert-dark text-center" role="alert">
-            <p class="fs-1 mb-2 text-warning-emphasis"><IconLoading /> Loading Pricing <IconLoading /></p>
-            <p class="mb-0">Getting the most recent pricing from Octopus Energy</p>
-        </div>
+        <PricingTable pricing={pricing[region]} priceCap={priceCap} updating={pricesUpdating} />
     {/if}
 </div>
 

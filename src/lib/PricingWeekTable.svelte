@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
 	import { DateTime } from "luxon";
 
+	import LoadingPricingAlert from "./LoadingPricingAlert.svelte";
     import { importColor } from "$lib/colors";
     import { round } from "$lib/maths";
     import IconWaiting from "$lib/Icons/IconWaiting.svelte";
@@ -9,8 +10,9 @@
 
     export let pricing: Price[] = [];
     export let priceCap: number;
+    export let updating = false;
 
-    $: pricing && processPricing();
+    $: pricing, processPricing();
 
     let processedPricing: { [key: string]: PriceHash } = {};
     let days = new Set();
@@ -47,12 +49,12 @@
         }
 
         // Average, highs and lows
-        for (const day of _days) {
+        for (const day of _days.values()) {
             dayTotal[`${day}`] = 0;
             dayHigh[`${day}`] = -Infinity;
             dayLow[`${day}`] = Infinity;
 
-            for (const halfHour of halfHours) {
+            for (const halfHour of _halfHours.values()) {
                 const price = processedPricing[`${day}`][`${halfHour}`];
                 if (price) {
                     dayTotal[`${day}`] += price.import;
@@ -60,7 +62,7 @@
                     dayLow[`${day}`] = (dayLow[`${day}`] > price.import ) ? price.import : dayLow[`${day}`];
                 }
             }
-            dayAvg[`${day}`] = dayTotal[`${day}`] / halfHours.size;
+            dayAvg[`${day}`] = dayTotal[`${day}`] / _halfHours.size;
         }
 
         // Force variable updates
@@ -69,10 +71,12 @@
         halfHours = _halfHours;
     }
 
-    onMount(() => { processPricing(); });
+    onMount(() => {
+        processPricing();
+    });
 </script>
 
-{#if halfHours.values() && days.values()}
+{#if processedPricing && halfHours.size && days.size}
     <div class="row justify-content-center font-monospace text-end">
         <div class="col ps-0 pe-1">&nbsp;</div>
         {#each days.values() as day}
@@ -125,8 +129,8 @@
             {/each}
         </div>
     {/each}
+{:else if updating}
+    <LoadingPricingAlert />
 {:else}
-    <p class="text-center">
-        <IconWaiting /> Data not currently available.
-    </p>
+    <IconWaiting /> Waiting on data...
 {/if}

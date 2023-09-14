@@ -7,12 +7,13 @@
 	import IconImportPaid from "$lib/Icons/IconImportPaid.svelte";
 	import IconLoading from "$lib/Icons/IconLoading.svelte";
 	import IconWaiting from "./Icons/IconWaiting.svelte";
+	import LoadingPricingAlert from "./LoadingPricingAlert.svelte";
     import { round } from "$lib/maths";
     import type Price from "$lib/Price";
 
     export let pricing: Price[] = [];
     export let priceCap: number;
-    export let updating = false;
+    export let updating = true;
 
     let processTimeout: number;
 
@@ -31,26 +32,28 @@
         let _processedPricing: ProccessedPrice[] = [];
         let lastDate = "";
 
-        for (const price of pricing) {
-            const date = price.fullReadableDate();
+        if (Array.isArray(pricing)) {
+            for (const price of pricing) {
+                const date = price.fullReadableDate();
 
-            // Lowest import price
-            if (!lowestImport.hasOwnProperty(date) || price.import < lowestImport[date]) {
-                lowestImport[date] = price.import;
-            }
+                // Lowest import price
+                if (!lowestImport.hasOwnProperty(date) || price.import < lowestImport[date]) {
+                    lowestImport[date] = price.import;
+                }
 
-            // Highest export price
-            if (!highestExport.hasOwnProperty(date) || price.export > highestExport[date]) {
-                highestExport[date] = price.export;
-            }
+                // Highest export price
+                if (!highestExport.hasOwnProperty(date) || price.export > highestExport[date]) {
+                    highestExport[date] = price.export;
+                }
 
-            // Want to render?
-            if (price.isNow() ||  price.isFuture()) {
-                _processedPricing.push({
-                    price,
-                    heading: (lastDate !== date),
-                });
-                lastDate = date;
+                // Want to render?
+                if (price.isNow() ||  price.isFuture()) {
+                    _processedPricing.push({
+                        price,
+                        heading: (lastDate !== date),
+                    });
+                    lastDate = date;
+                }
             }
         }
 
@@ -110,16 +113,16 @@
             </div>
         </div>
     {/each}
-{:else}
-    <p class="text-center">
-        <IconWaiting /> Data not currently available.
-    </p>
-{/if}
 
-<p class="text-center">
-    {#if updating}
-        <IconLoading /> Loading...
-    {:else}
-        <small>Prices become available between 4-8pm</small>
-    {/if}
-</p>
+    <p class="text-center">
+        {#if updating}
+            <IconLoading /> Checking for new prices...
+        {:else}
+            <small>Prices become available between 4-8pm</small>
+        {/if}
+    </p>
+{:else if updating}
+    <LoadingPricingAlert />
+{:else}
+    <IconWaiting /> Waiting on data...
+{/if}
