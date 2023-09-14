@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
-    import { browser } from "$app/environment";
 
+    import LocalStorage from "$lib/local-storage";
     import regions, { validRegion } from "$lib/regions";
 	import IconLoading from "$lib/Icons/IconLoading.svelte";
 
@@ -21,9 +21,7 @@
 
     const updateRegion = function() {
         if (validRegion(region)) {
-            if (browser && localStorage) {
-                localStorage.setItem("region", region);
-            }
+            LocalStorage.setItem("region", region);
         } else {
             region = defaultRegion;
         }
@@ -68,10 +66,7 @@
 
     onMount(() => {
         // Load region or set to default
-        let localRegion = "";
-        if (browser && localStorage) {
-            localRegion = localStorage.getItem("region") || "";
-        }
+        let localRegion = LocalStorage.getItem("region") || "";
         region = (validRegion(localRegion)) ? localRegion : defaultRegion;
     });
 </script>
