@@ -1,16 +1,18 @@
 <script lang="ts">
+	import { onMount } from "svelte";
     import { DateTime } from "luxon";
 
 	import IconAboveCap from "$lib/Icons/IconAboveCap.svelte";
 	import PriceCapInput from "$lib/PriceCapInput.svelte";
-	import PricingTableFooter from "$lib/PricingTableFooter.svelte";
 	import PricingWeekTable from "$lib/PricingWeekTable.svelte";
     import { defaultPriceCap } from "$lib/price-cap";
-    import { fetchAgileData } from "$lib/octopus-api";
+    import { defaultRegion } from "$lib/regions";
     import { OCTOPUS_LINK } from "$lib/vars";
     import { validRegion } from "$lib/regions";
     import IconLoading from "$lib/Icons/IconLoading.svelte";
+    import LocalStorage from "$lib/local-storage";
     import OctopusAd from "$lib/OctopusAd.svelte";
+    import OctopusApi from "$lib/octopus-api";
     import Price from "$lib/Price";
     import PricingTable from "$lib/PricingTable.svelte";
     import RegionSelect from "$lib/RegionSelect.svelte";
@@ -27,6 +29,7 @@
     let pricingLastUpdated: DateTime;
     let pricingTab = PRICE_TAB_UPCOMING;
 
+
     $: region, loadData();
 
     const loadData = async function() {
@@ -37,19 +40,36 @@
         pricesUpdating = true;
         pricesUpdatingError = false;
 
+        // No pricing? Load from storage
+        if (pricing.length === 0) {
+            let importJsonStr = LocalStorage.getItem("importJson");
+            let exportJsonStr = LocalStorage.getItem("exportJson");
+
+            if (importJsonStr && exportJsonStr) {
+                pricing = OctopusApi.jsonToPriceArray(JSON.parse(importJsonStr), JSON.parse(exportJsonStr));
+            }
+        }
+
+        // Update the data
         try {
             const now = DateTime.now();
-            pricing = await fetchAgileData(
+            let { importJson, exportJson } = await OctopusApi.fetch(
                 region,
                 now.minus({day: 14}).startOf("day"),
                 now.plus({day: 1}).endOf("day")
             );
+
+            LocalStorage.setItem("importJson", JSON.stringify(importJson));
+            LocalStorage.setItem("exportJson", JSON.stringify(importJson));
+
+            pricing = OctopusApi.jsonToPriceArray(importJson, exportJson);
 
             pricingLastUpdated = now;
         } catch (e) {
             pricesUpdatingError = true;
         }
 
+        pricesUpdatingError = true;
         pricesUpdating = false;
     }
 
@@ -86,9 +106,10 @@
         }
     }
 
-    // Heartbeat once a minute
-    setInterval(() => { heartbeat()}, 10 * 1000);
-
+    onMount(() => {
+        region = LocalStorage.getItem("region") || defaultRegion;
+        setInterval(() => { heartbeat()}, 10 * 1000);
+    });
 </script>
 
 <svelte:head>
@@ -110,12 +131,7 @@
 </div>
 
 <div id="pricing-table" class="container mb-4 mx-auto">
-    {#if pricing.length == 0}
-        <div class="alert alert-dark text-center" role="alert">
-            <p class="fs-1 mb-2 text-warning-emphasis"><IconLoading /> Loading Pricing <IconLoading /></p>
-            <p class="mb-0">Getting the most recent pricing from Octopus Energy</p>
-        </div>
-    {:else}
+    {#if pricing.length}
         <ul class="nav nav-underline nav-fill mb-2">
             <li class="nav-item p-0">
                 <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_UPCOMING) ? "active" : "text-body-emphasis"}"
@@ -130,9 +146,13 @@
         {#if pricingTab === PRICE_TAB_LAST_WEEK}
             <PricingWeekTable pricing={pricing} priceCap={priceCap} />
         {:else}
-            <PricingTable pricing={pricing} priceCap={priceCap} />
-            <PricingTableFooter updating={pricesUpdating} error={pricesUpdatingError} />
+            <PricingTable pricing={pricing} priceCap={priceCap} updating={pricesUpdating} />
         {/if}
+    {:else}
+        <div class="alert alert-dark text-center" role="alert">
+            <p class="fs-1 mb-2 text-warning-emphasis"><IconLoading /> Loading Pricing <IconLoading /></p>
+            <p class="mb-0">Getting the most recent pricing from Octopus Energy</p>
+        </div>
     {/if}
 </div>
 

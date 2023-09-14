@@ -4,6 +4,7 @@
 
     import { importColor } from "$lib/colors";
     import { round } from "$lib/maths";
+    import IconWaiting from "$lib/Icons/IconWaiting.svelte";
     import Price, { type PriceHash } from "$lib/Price"
 
     export let pricing: Price[] = [];
@@ -23,7 +24,7 @@
     const processPricing = function() {
         const now = DateTime.now();
         const dayOfWeek = parseInt(now.toFormat("c"))
-        let start = now.minus({days: 7 - dayOfWeek}).startOf("week");
+        let start = now.minus({days: dayOfWeek}).startOf("week");
         let end = start.endOf("week");
 
         let _days = new Set();
@@ -53,9 +54,11 @@
 
             for (const halfHour of halfHours) {
                 const price = processedPricing[`${day}`][`${halfHour}`];
-                dayTotal[`${day}`] += price.import;
-                dayHigh[`${day}`] = (dayHigh[`${day}`] < price.import ) ? price.import : dayHigh[`${day}`];
-                dayLow[`${day}`] = (dayLow[`${day}`] > price.import ) ? price.import : dayLow[`${day}`];
+                if (price) {
+                    dayTotal[`${day}`] += price.import;
+                    dayHigh[`${day}`] = (dayHigh[`${day}`] < price.import ) ? price.import : dayHigh[`${day}`];
+                    dayLow[`${day}`] = (dayLow[`${day}`] > price.import ) ? price.import : dayLow[`${day}`];
+                }
             }
             dayAvg[`${day}`] = dayTotal[`${day}`] / halfHours.size;
         }
@@ -69,51 +72,61 @@
     onMount(() => { processPricing(); });
 </script>
 
-<div class="row justify-content-center font-monospace text-end">
-    <div class="col ps-0 pe-1">&nbsp;</div>
-    {#each days.values() as day}
-        <div class="col ps-0 pe-1">{day}</div>
-    {/each}
-</div>
-
-<div class="row justify-content-center font-monospace text-end">
-    <div class="col ps-0 pe-1 text-center"><small>High</small></div>
-    {#each days.values() as day}
-        {@const val = dayHigh[`${day}`]}
-        <div class="col ps-0 pe-1 " style="background-color: {importColor(val, priceCap)}; color: Black;">
-            {round(val)}p
-        </div>
-    {/each}
-</div>
-<div class="row justify-content-center font-monospace text-end">
-    <div class="col ps-0 pe-1 text-center"><small>Avg</small></div>
-    {#each days.values() as day}
-        {@const val = dayAvg[`${day}`]}
-        <div class="col ps-0 pe-1 " style="background-color: {importColor(val, priceCap)}; color: Black;">
-            {round(val)}p
-        </div>
-    {/each}
-</div>
-
-<div class="row justify-content-center font-monospace text-end mb-1">
-    <div class="col ps-0 pe-1 text-center"><small>Low</small></div>
-    {#each days.values() as day}
-        {@const val = dayLow[`${day}`]}
-        <div class="col ps-0 pe-1 " style="background-color: {importColor(val, priceCap)}; color: Black;">
-            {round(val)}p
-        </div>
-    {/each}
-</div>
-
-{#each halfHours.values() as halfHour}
+{#if halfHours.values() && days.values()}
     <div class="row justify-content-center font-monospace text-end">
-        <div class="col ps-0 pe-1 text-center"><small>{halfHour}</small></div>
-
+        <div class="col ps-0 pe-1">&nbsp;</div>
         {#each days.values() as day}
-            {@const price = processedPricing[`${day}`][`${halfHour}`]}
-            <div class="col ps-0 pe-1" style="background-color: {importColor(price.import, priceCap)}; color: Black;">
-                {round(price.import)}p
+            <div class="col ps-0 pe-1">{day}</div>
+        {/each}
+    </div>
+
+    <div class="row justify-content-center font-monospace text-end">
+        <div class="col ps-0 pe-1 text-center"><small>High</small></div>
+        {#each days.values() as day}
+            {@const val = dayHigh[`${day}`]}
+            <div class="col ps-0 pe-1 " style="background-color: {importColor(val, priceCap)}; color: Black;">
+                {round(val)}p
             </div>
         {/each}
     </div>
-{/each}
+    <div class="row justify-content-center font-monospace text-end">
+        <div class="col ps-0 pe-1 text-center"><small>Avg</small></div>
+        {#each days.values() as day}
+            {@const val = dayAvg[`${day}`]}
+            <div class="col ps-0 pe-1 " style="background-color: {importColor(val, priceCap)}; color: Black;">
+                {round(val)}p
+            </div>
+        {/each}
+    </div>
+
+    <div class="row justify-content-center font-monospace text-end mb-1">
+        <div class="col ps-0 pe-1 text-center"><small>Low</small></div>
+        {#each days.values() as day}
+            {@const val = dayLow[`${day}`]}
+            <div class="col ps-0 pe-1 " style="background-color: {importColor(val, priceCap)}; color: Black;">
+                {round(val)}p
+            </div>
+        {/each}
+    </div>
+
+    {#each halfHours.values() as halfHour}
+        <div class="row justify-content-center font-monospace text-end">
+            <div class="col ps-0 pe-1 text-center"><small>{halfHour}</small></div>
+
+            {#each days.values() as day}
+                {@const price = processedPricing[`${day}`][`${halfHour}`]}
+                {#if price}
+                    <div class="col ps-0 pe-1" style="background-color: {importColor(price.import, priceCap)}; color: Black;">
+                        {round(price.import)}p
+                    </div>
+                {:else}
+                    <div class="col ps-0 pe-1">&nbsp;</div>
+                {/if}
+            {/each}
+        </div>
+    {/each}
+{:else}
+    <p class="text-center">
+        <IconWaiting /> Data not currently available.
+    </p>
+{/if}

@@ -2,17 +2,21 @@
     import { onMount } from "svelte";
 	import { DateTime } from "luxon";
 
-    import type Price from "$lib/Price";
 	import IconAboveCap from "$lib/Icons/IconAboveCap.svelte";
 	import IconImportLowest from "$lib/Icons/IconImportLowest.svelte";
 	import IconImportPaid from "$lib/Icons/IconImportPaid.svelte";
+	import IconLoading from "$lib/Icons/IconLoading.svelte";
+	import IconWaiting from "./Icons/IconWaiting.svelte";
     import { round } from "$lib/maths";
+    import type Price from "$lib/Price";
+
     export let pricing: Price[] = [];
     export let priceCap: number;
+    export let updating = false;
 
     let processTimeout: number;
 
-    $: pricing && processPricing();
+    $: pricing, processPricing();
 
     interface ProccessedPrice {
         price: Price;
@@ -61,45 +65,61 @@
         processTimeout = setTimeout(function() { processPricing() }, secs * 1000)
     }
 
-    onMount(() => { processPricing(); });
+    onMount(() => {
+        processPricing();
+    });
 </script>
 
-{#each processedPricing as item}
-    {#if item.heading}
-        <div class="row justify-content-center">
-            <div class="col-12 text-center text-bg-dark p-2 fw-bold">{item.price.fullReadableDate()}</div>
-        </div>
+{#if processedPricing.length}
+    {#each processedPricing as item}
+        {#if item.heading}
+            <div class="row justify-content-center">
+                <div class="col-12 text-center text-bg-dark p-2 fw-bold">{item.price.fullReadableDate()}</div>
+            </div>
 
-        <div class="row justify-content-center text-center">
-            <div class="col-2 px-0">Time</div>
-            <div class="col-3 px-0 text-end">When</div>
-            <div class="col-2 px-0">&nbsp;</div>
-            <div class="col-2 px-0">Import</div>
-            <div class="col-2 px-0">Export</div>
+            <div class="row justify-content-center text-center">
+                <div class="col-2 px-0">Time</div>
+                <div class="col-3 px-0 text-end">When</div>
+                <div class="col-2 px-0">&nbsp;</div>
+                <div class="col-2 px-0">Import</div>
+                <div class="col-2 px-0">Export</div>
+            </div>
+        {/if}
+
+        <div class="row justify-content-center font-monospace">
+            <div class="col-2 px-0 text-center">
+                {item.price.readableTime()}
+            </div>
+            <div class="col-3 px-0 text-end">
+                {item.price.diffStr()}
+            </div>
+            <div class="col-2 px-0 text-center">
+                {#if item.price.import <= 0}
+                    <IconImportPaid />
+                {:else if item.price.importCloseToLowestImport(lowestImport[item.price.fullReadableDate()])}
+                    <IconImportLowest color={item.price.importColor(priceCap)} />
+                {:else if item.price.import > priceCap}
+                    <IconAboveCap />
+                {/if}
+            </div>
+            <div class="col-2 px-1 text-end" style="background-color: {item.price.importColor(priceCap)}; color: Black;">
+                {round(item.price.import)}p
+            </div>
+            <div class="col-2 px-1 text-end" style="background-color: {item.price.exportColor(priceCap)}; color: Black;">
+                {round(item.price.export)}p
+            </div>
         </div>
+    {/each}
+{:else}
+    <p class="text-center">
+        <IconWaiting /> Data not currently available.
+    </p>
+{/if}
+
+<p class="text-center">
+    {#if updating}
+        <IconLoading /> Loading...
+    {:else}
+        <small>Prices become available between 4-8pm</small>
     {/if}
-
-    <div class="row justify-content-center font-monospace">
-        <div class="col-2 px-0 text-center">
-            {item.price.readableTime()}
-        </div>
-        <div class="col-3 px-0 text-end">
-            {item.price.diffStr()}
-        </div>
-        <div class="col-2 px-0 text-center">
-            {#if item.price.import <= 0}
-                <IconImportPaid />
-            {:else if item.price.importCloseToLowestImport(lowestImport[item.price.fullReadableDate()])}
-                <IconImportLowest color={item.price.importColor(priceCap)} />
-            {:else if item.price.import > priceCap}
-                <IconAboveCap />
-            {/if}
-        </div>
-        <div class="col-2 px-1 text-end" style="background-color: {item.price.importColor(priceCap)}; color: Black;">
-            {round(item.price.import)}p
-        </div>
-        <div class="col-2 px-1 text-end" style="background-color: {item.price.exportColor(priceCap)}; color: Black;">
-            {round(item.price.export)}p
-        </div>
-    </div>
-{/each}
+</p>

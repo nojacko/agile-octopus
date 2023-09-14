@@ -1,13 +1,12 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 
-    import LocalStorage from "$lib/local-storage";
-    import regions, { validRegion } from "$lib/regions";
 	import IconLoading from "$lib/Icons/IconLoading.svelte";
+    import LocalStorage from "$lib/local-storage";
+    import regions, { defaultRegion, validRegion } from "$lib/regions";
 
     export let region: string;
 
-    const defaultRegion = "B";
     let showLookup = false;
     let lookupLoading = false;
     let lookupNotFound = false;
@@ -17,7 +16,7 @@
     let userPostcode = "";
 
     $: region, updateRegion();
-    $: showLookup, resetLookup()
+    $: showLookup, resetLookup();
 
     const updateRegion = function() {
         if (validRegion(region)) {
@@ -65,9 +64,7 @@
     }
 
     onMount(() => {
-        // Load region or set to default
-        let localRegion = LocalStorage.getItem("region") || "";
-        region = (validRegion(localRegion)) ? localRegion : defaultRegion;
+        updateRegion();
     });
 </script>
 
