@@ -17,7 +17,6 @@ const regions: { [key: string]: string; } = {
 
 export default regions;
 
-
 export const defaultRegion = "B";
 
 export const validRegion = function(value: string) {

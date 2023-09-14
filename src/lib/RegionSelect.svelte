@@ -19,11 +19,7 @@
     $: showLookup, resetLookup();
 
     const updateRegion = function() {
-        if (validRegion(region)) {
-            LocalStorage.setItem("region", region);
-        } else {
-            region = defaultRegion;
-        }
+        LocalStorage.setItem("region", region);
     }
 
     const resetLookup = function() {

@@ -29,7 +29,6 @@
     let pricingLastUpdated: DateTime;
     let pricingTab = PRICE_TAB_UPCOMING;
 
-
     $: region, loadData();
 
     const loadData = async function() {
@@ -131,7 +130,7 @@
 </div>
 
 <div id="pricing-table" class="container mb-4 mx-auto">
-    {#if pricing.length}
+    {#if pricing.length && validRegion(region)}
         <ul class="nav nav-underline nav-fill mb-2">
             <li class="nav-item p-0">
                 <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_UPCOMING) ? "active" : "text-body-emphasis"}"
