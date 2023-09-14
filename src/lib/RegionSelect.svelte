@@ -2,7 +2,6 @@
 	import { onMount } from "svelte";
 
 	import IconLoading from "$lib/Icons/IconLoading.svelte";
-    import LocalStorage from "$lib/local-storage";
     import regions, { defaultRegion, validRegion } from "$lib/regions";
 
     export let region: string;
@@ -15,12 +14,7 @@
     let userRegion = "";
     let userPostcode = "";
 
-    $: region, updateRegion();
     $: showLookup, resetLookup();
-
-    const updateRegion = function() {
-        LocalStorage.setItem("region", region);
-    }
 
     const resetLookup = function() {
         lookupError = false;
@@ -58,10 +52,6 @@
 
         lookupLoading = false;
     }
-
-    onMount(() => {
-        updateRegion();
-    });
 </script>
 
 <div id="region">

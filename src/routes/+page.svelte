@@ -25,7 +25,6 @@
     let priceCap: number = defaultPriceCap;
     let pricing: Price[] = [];
     let pricesUpdating = false;
-    let pricesUpdatingError = false;
     let pricingLastUpdated: DateTime;
     let pricingTab = PRICE_TAB_UPCOMING;
 
@@ -36,8 +35,9 @@
             return;
         }
 
+        LocalStorage.setItem("region", region);
+
         pricesUpdating = true;
-        pricesUpdatingError = false;
 
         // No pricing? Load from storage
         if (pricing.length === 0) {
@@ -65,10 +65,9 @@
 
             pricingLastUpdated = now;
         } catch (e) {
-            pricesUpdatingError = true;
+            // Nothing
         }
 
-        pricesUpdatingError = true;
         pricesUpdating = false;
     }
 
