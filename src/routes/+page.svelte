@@ -4,7 +4,7 @@
 
 	import IconAboveCap from "$lib/Icons/IconAboveCap.svelte";
 	import PriceCapInput from "$lib/PriceCapInput.svelte";
-	import PricingWeekTable from "$lib/PricingWeekTable.svelte";
+	import PricingTable7Days from "$lib/PricingTable7Days.svelte";
     import { defaultPriceCap } from "$lib/price-cap";
     import { defaultRegion } from "$lib/regions";
     import { OCTOPUS_LINK } from "$lib/vars";
@@ -138,16 +138,16 @@
     <ul class="nav nav-underline nav-fill mb-2">
         <li class="nav-item p-0">
             <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_UPCOMING) ? "active" : "text-body-emphasis"}"
-                on:click={() => { pricingTab = PRICE_TAB_UPCOMING }}>Upcoming</a>
+                on:click={() => { pricingTab = PRICE_TAB_UPCOMING }}>Live Pricing</a>
         </li>
         <li class="nav-item p-0">
             <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_LAST_WEEK) ? "active" : "text-body-emphasis"}"
-                on:click={() => { pricingTab = PRICE_TAB_LAST_WEEK }}>Last Week</a>
+                on:click={() => { pricingTab = PRICE_TAB_LAST_WEEK }}>Last 7 Days</a>
         </li>
     </ul>
 
     {#if pricingTab === PRICE_TAB_LAST_WEEK}
-        <PricingWeekTable pricing={pricing[region]} priceCap={priceCap} updating={pricesUpdating} />
+        <PricingTable7Days pricing={pricing[region]} priceCap={priceCap} updating={pricesUpdating} />
     {:else}
         <PricingTable pricing={pricing[region]} priceCap={priceCap} updating={pricesUpdating} />
     {/if}
