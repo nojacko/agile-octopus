@@ -15,10 +15,12 @@
     import Price from "$lib/Price";
     import PricingTable from "$lib/PricingTable.svelte";
     import RegionSelect from "$lib/RegionSelect.svelte";
+    import { COLOUR_ABOVE_PRICE_CAP, COLOUR_GOLD } from "$lib/colors";
+	import IconImportPaid from "$lib/Icons/IconImportPaid.svelte";
 
     const PRICE_TAB_UPCOMING = "upcoming";
     const PRICE_TAB_LAST_WEEK = "last-week";
-    const h2Class = "display-1 fs-3 text-light";
+    const h2Class = "display-1 fs-3 my-3 text-light";
 
     let region: string;
     let priceCap: number = defaultPriceCap;
@@ -123,7 +125,7 @@
 
 <div class="container mb-4 mx-auto">
     <p class="text-body-emphasis text-center">
-        Quickly see the upcoming electricity prices for Octopus Energy's <a href="#about">Agile Octopus</a> tariff.
+        Quickly see the live, upcoming and average electricity prices for Octopus Energy's <a href="#about">Agile Octopus</a> tariff.
     </p>
     <p class="text-center">
         <a href="#about" class="btn btn-outline-light btn-sm">Learn more</a>
@@ -164,23 +166,46 @@
 
     <OctopusAd />
 
-    <h2 class="{h2Class}">Cheapest Electricity?</h2>
-    <p>Generally, weekends are the cheapest. Daily, around <u>12am to 5am</u> is usually cheapest. Early afternoon around <u>12pm to 3pm</u> can be cheap too.</p>
+    <h2 class="{h2Class}">Cheapest Electricity and Plunge Pricing!</h2>
+
+    <h3 class="h6 text-light"><i class="fa-regular fa-clock"></i> Weekends are cheaper than weekdays, usually.</h3>
     <p>
-        <span class="text-danger-emphasis"><i class="fa-solid fa-triangle-exclamation"></i> Electricity prices can fluctuate!</span>
-        Anything from changes in natural gas global prices, power plant maintenance, weather conditions, and many others reasons.
-    </p>
-    <p>
-        <span class="text-info-emphasis"><i class="fa-solid fa-wind text-info-emphasis"></i> Check the weather!</span>
-        Wind power is the UK's largest source of renewable energy. If it's going to be windy prices <em>should</em> drop.
+        On a day-to-day basis, around <u>12am to 5am</u> is usually cheapest with early afternoon around <u>12pm to 3pm</u> often having a price drop too.
     </p>
 
-    <h2 class="{h2Class}">Price Cap</h2>
+    <h3 class="h6" style="color: aqua;"><i class="fa-solid fa-wind"></i> Wind power is the UK's largest source of renewable energy!</h3>
+    <p>
+        If it's going to be windy prices <em>should</em> drop.
+    </p>
+
+    <h3 class="h6" style="color:orange"><i class="fa-regular fa-sun"></i> When the sunshines, prices fall!</h3>
+    <p>
+        The UK has less solar than wind but on sunny days, between 11am and 3pm, it can make a big difference.
+    </p>
+
+    <h3 class="h6" style="color:{COLOUR_GOLD}"><IconImportPaid /> Plunge Pricing!</h3>
+    <p>
+        Given the right time and conditions we get <em>plunge pricing</em>.
+        That means you get paid to use electricity!
+        So put the washing on, tumble dry your clothes, turn the dishwasher on, turn on an electric heater, ... and get paid!
+    </p>
+
+    <h3 class="h6" style="color:{COLOUR_ABOVE_PRICE_CAP}"><IconAboveCap /> Beware of Higher Prices!</h3>
+    <p>
+        Electricity prices can fluctuate! The prices tend to peak daily between <u>4pm and 7pm</u>.
+    </p>
+    <p>
+        Many things can causes prices to rise.Anything from changes in natural gas global prices, power plant maintenance, weather conditions, and many others reasons.
+    </p>
+
+    <OctopusAd />
+
+    <h2 class="{h2Class}">The Energy Price Cap</h2>
     <p>
         The <u>{defaultPriceCap}p</u> electricity price cap is set by <a href="https://www.ofgem.gov.uk/information-consumers/energy-advice-households/energy-price-cap" target="_blank">Ofgem</a>.
         <span class="text-danger-emphasis">Agile prices can go above the price cap!</span>
         When this happens, you'll see an <IconAboveCap /> exclamation icon.
-        You can change the cap below.
+        You can modify the cap below.
     </p>
     <PriceCapInput bind:priceCap={priceCap} defaultPriceCap={defaultPriceCap}></PriceCapInput>
 

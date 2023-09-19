@@ -25,8 +25,9 @@ const EXPORT_SCALE = [
     RED,
 ];
 
-export const ABOVE_PRICE_CAP = PURPLE;
+export const COLOUR_ABOVE_PRICE_CAP = PURPLE;
 export const PAID_TO_IMPORT = GREEN;
+export const COLOUR_GOLD = "gold";
 
 export const importColor = function(price: number, cap: number) {
     if (price <= 0) {
