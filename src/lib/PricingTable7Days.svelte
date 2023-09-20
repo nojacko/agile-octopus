@@ -111,7 +111,7 @@
         {/each}
     </div>
 
-    <h3 class="h6 text-center">Hour-Hourly Pricing</h3>
+    <h3 class="h6 text-center">Half-Hourly Pricing</h3>
     {#each halfHours.values() as halfHour}
         <div class="row justify-content-center font-monospace text-end">
             <div class="col p-0 pe-1 text-center"><small>{halfHour}</small></div>
