@@ -17,9 +17,11 @@
     import RegionSelect from "$lib/RegionSelect.svelte";
     import { COLOUR_ABOVE_PRICE_CAP, COLOUR_GOLD } from "$lib/colors";
 	import IconImportPaid from "$lib/Icons/IconImportPaid.svelte";
+	import PricingTableAverage from "$lib/PricingTableAverage.svelte";
 
     const PRICE_TAB_UPCOMING = "upcoming";
-    const PRICE_TAB_LAST_WEEK = "last-week";
+    const PRICE_TAB_7DAYS = "7-days";
+    const PRICE_TAB_AVERAGE = "average";
     const h2Class = "display-1 fs-3 my-3 text-light";
 
     let region: string;
@@ -59,7 +61,7 @@
             const now = DateTime.now();
             let { importJson, exportJson } = await OctopusApi.fetch(
                 region,
-                now.minus({day: 14}).startOf("day"),
+                now.minus({day: 7*4}).startOf("day"),
                 now.plus({day: 1}).endOf("day")
             );
 
@@ -141,13 +143,19 @@
                 on:click={() => { pricingTab = PRICE_TAB_UPCOMING }}>Live Pricing</a>
         </li>
         <li class="nav-item p-0">
-            <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_LAST_WEEK) ? "active" : "text-body-emphasis"}"
-                on:click={() => { pricingTab = PRICE_TAB_LAST_WEEK }}>Last 7 Days</a>
+            <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_7DAYS) ? "active" : "text-body-emphasis"}"
+                on:click={() => { pricingTab = PRICE_TAB_7DAYS }}>Last 7 Days</a>
+        </li>
+        <li class="nav-item p-0">
+            <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_AVERAGE) ? "active" : "text-body-emphasis"}"
+                on:click={() => { pricingTab = PRICE_TAB_AVERAGE }}>4 Weeks</a>
         </li>
     </ul>
 
-    {#if pricingTab === PRICE_TAB_LAST_WEEK}
+    {#if pricingTab === PRICE_TAB_7DAYS}
         <PricingTable7Days pricing={pricing[region]} priceCap={priceCap} updating={pricesUpdating} />
+    {:else if pricingTab === PRICE_TAB_AVERAGE}
+        <PricingTableAverage pricing={pricing[region]} priceCap={priceCap} updating={pricesUpdating} />
     {:else}
         <PricingTable pricing={pricing[region]} priceCap={priceCap} updating={pricesUpdating} />
     {/if}

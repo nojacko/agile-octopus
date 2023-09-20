@@ -82,14 +82,15 @@
     </div>
 
     <div class="row justify-content-center font-monospace text-end">
-        <div class="col p-0 pe-1 text-center"><small>High</small></div>
+        <div class="col p-0 pe-1 text-center"><small>Low</small></div>
         {#each days.values() as day}
-            {@const val = dayHigh[`${day}`]}
+            {@const val = dayLow[`${day}`]}
             <div class="col p-0 pe-1 " style="background-color: {importColor(val, priceCap)}; color: Black;">
                 {round(val)}p
             </div>
         {/each}
     </div>
+
     <div class="row justify-content-center font-monospace text-end">
         <div class="col p-0 pe-1 text-center"><small>Avg</small></div>
         {#each days.values() as day}
@@ -100,16 +101,17 @@
         {/each}
     </div>
 
-    <div class="row justify-content-center font-monospace text-end mb-1">
-        <div class="col p-0 pe-1 text-center"><small>Low</small></div>
+    <div class="row justify-content-center font-monospace text-end mb-2">
+        <div class="col p-0 pe-1 text-center"><small>High</small></div>
         {#each days.values() as day}
-            {@const val = dayLow[`${day}`]}
+            {@const val = dayHigh[`${day}`]}
             <div class="col p-0 pe-1 " style="background-color: {importColor(val, priceCap)}; color: Black;">
                 {round(val)}p
             </div>
         {/each}
     </div>
 
+    <h3 class="h6 text-center">Hour-Hourly Pricing</h3>
     {#each halfHours.values() as halfHour}
         <div class="row justify-content-center font-monospace text-end">
             <div class="col p-0 pe-1 text-center"><small>{halfHour}</small></div>
