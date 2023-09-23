@@ -166,8 +166,6 @@
     <p>With <a href="{OCTOPUS_LINK}" target="_blank">Agile Octopus</a>, you get access to half-hourly energy prices, tied to wholesale prices and updated daily. So when wholesale electricity prices drop, so do your bills - and if you can shift your daily electricity use outside of peak times, you can save even more.</p>
     <p><a href="{OCTOPUS_LINK}" target="_blank">Agile Octopus</a> includes Plunge Pricing that lets you take advantage of these negative price events, and get paid for the electricity you use!</p>
 
-    <OctopusAd />
-
     <h2 id="how-to-get-agile" class="{h2Class}">How To Get Agile Octopus?</h2>
     <p>Switch to <a href="{OCTOPUS_LINK}" target="_blank">Octopus Energy</a> and get £50 free credit!</p>
     <p>After the switch has completed, visit <a href="https://octopus.energy/smart/agile/" target="_blank">Agile Octopus</a> to sign up.</p>
@@ -200,10 +198,9 @@
 
     <h3 class="h6" style="color:{COLOUR_ABOVE_PRICE_CAP}"><IconAboveCap /> Beware of Higher Prices!</h3>
     <p>
-        Electricity prices can fluctuate! The prices tend to peak daily between <u>4pm and 7pm</u>.
-    </p>
-    <p>
-        Many things can causes prices to rise.Anything from changes in natural gas global prices, power plant maintenance, weather conditions, and many others reasons.
+        Prices tend to peak between <u>4pm and 7pm</u> every day, with a morning spike between <u>6:30am and 9am</u>.
+        However, electricity prices can fluctuate for many reasons.
+        Anything from changes in global natural gas prices, power plant maintenance, weather conditions, and many more... so keep an eye on prices.
     </p>
 
     <OctopusAd />
