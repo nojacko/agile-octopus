@@ -97,7 +97,7 @@
                 {item.price.diffStr()}
             </div>
             <div class="col-2 px-0 text-center">
-                {#if item.price.import <= 0}
+                {#if item.price.import < 0}
                     <IconImportPaid />
                 {:else if item.price.importCloseToLowestImport(lowestImport[item.price.fullReadableDate()])}
                     <IconImportLowest color={item.price.importColor(priceCap)} />
