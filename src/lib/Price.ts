@@ -34,9 +34,22 @@ class Price {
 
         const now = DateTime.now();
         const diff = this.validFrom.diff(now, ['hours', 'minutes']).toObject();
-        const hours = Math.round(diff.hours || 0);
-        const minutes = Math.round(diff.minutes || 0);
-        return `${(hours > 0) ? `${hours}h` : ``} ${minutes.toString().padStart(2, "0")}m`;
+        let hours = diff.hours || 0;
+        let minutes = Math.round(diff.minutes || 0);
+
+        // Ensure we don't show "60m" (as that's 1 hour) due to rounding
+        if (minutes === 60) {
+            hours += 1;
+            minutes = 0;
+        }
+
+        if (hours === 0 && minutes === 0) {
+            return "<1m";
+        } else if (hours === 0) {
+            return `${minutes}m`
+        }
+
+        return `${hours}h ${minutes.toString().padStart(2, "0")}m`;
     }
 
     importColor(priceCap: number) {
