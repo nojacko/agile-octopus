@@ -2,7 +2,7 @@
     import OctopusAd from "$lib/OctopusAd.svelte";
 </script>
 
-<h1 class="text-center display-1 fs-1 text-light mx-1 my-2">Agile Octopus Price Tracker</h1>
+<h1 id="top" class="text-center display-1 fs-1 text-light mx-1 my-2">Agile Octopus Price Tracker</h1>
 
 <div class="container mb-4 mx-auto">
     <slot />
