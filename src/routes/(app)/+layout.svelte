@@ -1,16 +1,30 @@
 <script lang="ts">
+    import '../../app.css';
     import OctopusAd from "$lib/OctopusAd.svelte";
+
+    const navItemClass = "nav-link link-light"
 </script>
 
-<h1 id="top" class="text-center display-1 fs-1 text-light mx-1 my-2">Agile Octopus Price Tracker</h1>
+<h1 id="top" class="text-center display-1 fs-1 text-light mx-1 mt-2 mb-3">
+    <a href="/" class="link-light link-underline link-underline-opacity-0 link-underline-opacity-100-hover">Agile Octopus Price Tracker</a>
+</h1>
 
 <div class="container mb-4 mx-auto">
     <slot />
 </div>
 
-<div class="container mb-4 mx-auto">
+<div class="container mb-5 mx-auto">
     <OctopusAd />
-    <p class="fs-1 text-center mb-5">🐙</p>
+    <p class="fs-1 text-center">🐙</p>
+
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            <a class="{navItemClass}" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="{navItemClass}" href="/about">About</a>
+        </li>
+    </ul>
 </div>
 
 <div id="nav-bar" class="container-fluid border-top border-secondary-subtle py-1 text-center text-body-secondary">
@@ -26,22 +40,3 @@
         <a href="#how-to-get-agile" class="text-warning-emphasis">Free &pound;50!</a>
     </small>
 </div>
-
-<style>
-    .container {
-        max-width: 36rem;
-    }
-
-    #nav-bar {
-        position: fixed;
-        bottom: 0rem;
-        left: 0rem;
-        right: 0rem;
-        z-index: 10;
-        background-color: rgb(33, 37, 41);
-    }
-
-    #nav-bar a {
-        color: White;
-    }
-</style>
