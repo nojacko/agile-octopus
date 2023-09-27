@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { onMount } from "svelte";
-
 	import IconLoading from "$lib/Icons/IconLoading.svelte";
-    import regions, { defaultRegion, validRegion } from "$lib/regions";
+    import { Region, regions, validRegion, getRegionByCode } from "$lib/regions";
 
     export let region: string;
 
@@ -11,7 +9,7 @@
     let lookupNotFound = false;
     let lookupError = false;
     let postcode = "";
-    let userRegion = "";
+    let userRegion: Region|null;
     let userPostcode = "";
 
     $: showLookup, resetLookup();
@@ -37,9 +35,10 @@
             let suggestedRegion = "";
             if (lookupJson && lookupJson.results.length === 1) {
                 suggestedRegion = lookupJson.results[0].group_id.replace(/[^a-z0-9]/gi, '');
-                if (validRegion(suggestedRegion)) {
-                    userRegion = suggestedRegion;
-                    region = suggestedRegion;
+                const _userRegion = getRegionByCode(suggestedRegion);
+                if (_userRegion) {
+                    userRegion = _userRegion;
+                    region = userRegion.code;
                 }
             }
 
@@ -59,8 +58,8 @@
         <label class="input-group-text" for="region-select">Region</label>
         <select bind:value={region} class="form-select" id="region-select">
             <option value="">Select your region...</option>
-            {#each Object.keys(regions) as key}
-                <option value={key}>{regions[key]} ({key})</option>
+            {#each regions as reg}
+                <option value={reg.code}>{reg.longName}</option>
             {/each}
         </select>
         <button on:click={() => { showLookup = !showLookup }} class="btn btn-outline-secondary" type="button">
@@ -80,9 +79,9 @@
                     <div class="alert alert-secondary" role="alert">
                         <IconLoading /> Loading...
                     </div>
-                {:else if userRegion.length && userPostcode === postcode}
+                {:else if userRegion && userPostcode === postcode}
                     <div class="alert alert-secondary" role="alert">
-                        <i class="fa-solid fa-location-dot"></i> The region for <strong>{postcode.toUpperCase()}</strong> is <strong>{regions[userRegion]} ({userRegion})</strong>.
+                        <i class="fa-solid fa-location-dot"></i> The region for <strong>{postcode.toUpperCase()}</strong> is <strong>{userRegion.longName}</strong>.
                     </div>
                 {:else if lookupError}
                     <div class="alert alert-warning" role="alert">

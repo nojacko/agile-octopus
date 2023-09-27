@@ -1,24 +1,51 @@
-const regions: { [key: string]: string; } = {
-    "A": "Eastern England",
-    "B": "East Midlands",
-    "C": "London",
-    "D": "Merseyside and Northern Wales",
-    "E": "West Midlands",
-    "F": "North Eastern England",
-    "G": "North Western England",
-    "H": "Southern England",
-    "J": "South Eastern England",
-    "K": "Southern Wales",
-    "L": "South Western England",
-    "M": "Yorkshire",
-    "N": "Southern Scotland",
-    "P": "Northern Scotland"
+export class Region {
+    code: string;
+    name: string;
+
+    constructor(code: string, name: string) {
+        this.code = code;
+        this.name = name;
+    }
+
+    get slug() {
+        const slug = this.name.toLocaleLowerCase().replace(/[^\w]/gi, "-");
+        return `${slug}-${this.code}`;
+    }
+
+    get longName() {
+        return `${this.name} (${this.code})`;
+    }
 }
 
-export default regions;
+export const regions: Region[] = [
+    new Region("A", "Eastern England"),
+    new Region("B", "East Midlands"),
+    new Region("C", "London"),
+    new Region("D", "Merseyside and Northern Wales"),
+    new Region("E", "West Midlands"),
+    new Region("F", "North Eastern England"),
+    new Region("G", "North Western England"),
+    new Region("H", "Southern England"),
+    new Region("J", "South Eastern England"),
+    new Region("K", "Southern Wales"),
+    new Region("L", "South Western England"),
+    new Region("M", "Yorkshire"),
+    new Region("N", "Southern Scotland"),
+    new Region("P", "Northern Scotland"),
+];
 
 export const defaultRegion = "B";
 
+export const getRegionByCode = function(code: string) {
+    for (const region of regions) {
+        if (region.code === code) {
+            return region;
+        }
+    }
+
+    return null;
+}
+
 export const validRegion = function(value: string) {
-    return (value && value.length && typeof value === "string" && regions.hasOwnProperty(value));
+    return (getRegionByCode(value) !== null)
 }

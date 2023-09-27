@@ -6,9 +6,8 @@
 	import PriceCapInput from "$lib/PriceCapInput.svelte";
 	import PricingTable7Days from "$lib/PricingTable7Days.svelte";
     import { defaultPriceCap } from "$lib/price-cap";
-    import { defaultRegion } from "$lib/regions";
+    import { defaultRegion, validRegion } from "$lib/regions";
     import { OCTOPUS_LINK } from "$lib/vars";
-    import { validRegion } from "$lib/regions";
     import LocalStorage from "$lib/local-storage";
     import OctopusAd from "$lib/OctopusAd.svelte";
     import OctopusApi from "$lib/octopus-api";
