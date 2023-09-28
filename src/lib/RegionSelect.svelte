@@ -1,5 +1,5 @@
 <script lang="ts">
-	import IconLoading from "$lib/Icons/IconLoading.svelte";
+	import IconLoading from "$lib/Icon/IconLoading.svelte";
     import { Region, regions, validRegion, getRegionByCode } from "$lib/regions";
 
     export let region: string;

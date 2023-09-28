@@ -1,5 +1,5 @@
 <script lang="ts">
-    import IconLoading from "$lib/Icons/IconLoading.svelte";
+    import IconLoading from "$lib/Icon/IconLoading.svelte";
 </script>
 
 <div class="alert alert-dark text-center" role="alert">

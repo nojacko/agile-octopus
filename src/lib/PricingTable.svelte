@@ -2,11 +2,11 @@
     import { onMount } from "svelte";
 	import { DateTime } from "luxon";
 
-	import IconAboveCap from "$lib/Icons/IconAboveCap.svelte";
-	import IconImportLowest from "$lib/Icons/IconImportLowest.svelte";
-	import IconImportPaid from "$lib/Icons/IconImportPaid.svelte";
-	import IconLoading from "$lib/Icons/IconLoading.svelte";
-	import IconWaiting from "./Icons/IconWaiting.svelte";
+	import IconAboveCap from "$lib/Icon/IconAboveCap.svelte";
+	import IconImportLowest from "$lib/Icon/IconImportLowest.svelte";
+	import IconImportPaid from "$lib/Icon/IconImportPaid.svelte";
+	import IconLoading from "$lib/Icon/IconLoading.svelte";
+	import IconWaiting from "./Icon/IconWaiting.svelte";
 	import LoadingPricingAlert from "./LoadingPricingAlert.svelte";
     import { round } from "$lib/maths";
     import type Price from "$lib/Price";

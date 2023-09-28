@@ -3,7 +3,7 @@
 	import LoadingPricingAlert from "$lib/LoadingPricingAlert.svelte";
     import { importColor } from "$lib/colors";
     import { round } from "$lib/maths";
-    import IconWaiting from "$lib/Icons/IconWaiting.svelte";
+    import IconWaiting from "$lib/Icon/IconWaiting.svelte";
     import Price from "$lib/Price";
 
     export let pricing: Price[] = [];

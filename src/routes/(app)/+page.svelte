@@ -2,7 +2,7 @@
 	import { onMount } from "svelte";
     import { DateTime } from "luxon";
 
-	import IconAboveCap from "$lib/Icons/IconAboveCap.svelte";
+	import IconAboveCap from "$lib/Icon/IconAboveCap.svelte";
 	import PriceCapInput from "$lib/PriceCapInput.svelte";
 	import PricingTable7Days from "$lib/PricingTable7Days.svelte";
     import { defaultPriceCap } from "$lib/price-cap";
@@ -15,7 +15,7 @@
     import PricingTable from "$lib/PricingTable.svelte";
     import RegionSelect from "$lib/RegionSelect.svelte";
     import { COLOUR_ABOVE_PRICE_CAP, COLOUR_GOLD } from "$lib/colors";
-	import IconImportPaid from "$lib/Icons/IconImportPaid.svelte";
+	import IconImportPaid from "$lib/Icon/IconImportPaid.svelte";
 	import PricingTableAverage from "$lib/PricingTableAverage.svelte";
 
     const PRICE_TAB_UPCOMING = "upcoming";
