@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import { importColor, exportColor } from "$lib/colors";
+import { round } from "$lib/maths";
 
 export interface PriceHash { [key: string]: Price; };
 
@@ -50,6 +51,14 @@ class Price {
         }
 
         return `${hours}h ${minutes.toString().padStart(2, "0")}m`;
+    }
+
+    importStr() {
+        return (Number.isFinite(this.import)) ? `${round(this.import)}p` : "n/a";
+    }
+
+    exportStr() {
+        return (Number.isFinite(this.export)) ? `${round(this.export)}p` : "n/a";
     }
 
     importColor(priceCap: number) {

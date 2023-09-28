@@ -106,10 +106,10 @@
                 {/if}
             </div>
             <div class="col-2 px-1 text-end" style="background-color: {item.price.importColor(priceCap)}; color: Black;">
-                {round(item.price.import)}p
+                {item.price.importStr()}
             </div>
             <div class="col-2 px-1 text-end" style="background-color: {item.price.exportColor(priceCap)}; color: Black;">
-                {round(item.price.export)}p
+                {item.price.exportStr()}
             </div>
         </div>
     {/each}

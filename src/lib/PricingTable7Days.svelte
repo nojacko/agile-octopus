@@ -119,8 +119,8 @@
             {#each days.values() as day}
                 {@const price = processedPricing[key(day, halfHour)]}
                 {#if price}
-                    <div class="col p-0 pe-1" style="background-color: {importColor(price.import, priceCap)}; color: Black;">
-                        {round(price.import)}p
+                    <div class="col p-0 pe-1" style="background-color: {price.importColor(priceCap)}; color: Black;">
+                        {price.importStr()}
                     </div>
                 {:else}
                     <div class="col p-0 pe-1">&nbsp;</div>
