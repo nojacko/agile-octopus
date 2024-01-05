@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://agile-octopus.datafury.io/sitemap.txt
