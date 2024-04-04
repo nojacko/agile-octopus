@@ -6,7 +6,7 @@
 //     priceCap = 28.62; // New price
 // }
 
-export const defaultPriceCap = 28.62;
+export const defaultPriceCap = 24.50;
 
 export const validPriceCap = function(value: number) {
     return (Number.isFinite(value) && value >= 0 && value <= 99)
