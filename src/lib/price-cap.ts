@@ -1,12 +1,12 @@
-// import { DateTime } from "luxon";
-//
-// // https://www.ofgem.gov.uk/energy-price-cap
-// let priceCap = 28.62;
-// if (DateTime.now() > DateTime.fromISO("2023-10-01T12:00:00Z").startOf('day')) {
-//     priceCap = 28.62; // New price
-// }
+import { DateTime } from "luxon";
 
-export const defaultPriceCap = 24.50;
+// https://www.ofgem.gov.uk/energy-price-cap
+let priceCap = 22.36;
+if (DateTime.now() > DateTime.fromISO("2024-10-01T12:00:00Z").startOf('day')) {
+    priceCap = 24.50; // New price
+}
+
+export const defaultPriceCap = priceCap;
 
 export const validPriceCap = function(value: number) {
     return (Number.isFinite(value) && value >= 0 && value <= 99)
