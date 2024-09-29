@@ -7,6 +7,7 @@
 	import PricingTable7Days from "$lib/PricingTable7Days.svelte";
     import { defaultPriceCap } from "$lib/price-cap";
     import { defaultRegion, validRegion } from "$lib/regions";
+    import { defaultExportTariff, defaultImportTariff } from "$lib/tariffs";
     import { OCTOPUS_LINK } from "$lib/vars";
     import LocalStorage from "$lib/local-storage";
     import OctopusAd from "$lib/OctopusAd.svelte";
@@ -14,6 +15,8 @@
     import Price from "$lib/Price";
     import PricingTable from "$lib/PricingTable.svelte";
     import RegionSelect from "$lib/RegionSelect.svelte";
+    import ImportTariffSelect from "$lib/ImportTariffSelect.svelte";
+    import ExportTariffSelect from "$lib/ExportTariffSelect.svelte";
     import { COLOUR_ABOVE_PRICE_CAP, COLOUR_GOLD } from "$lib/colors";
 	import IconImportPaid from "$lib/Icon/IconImportPaid.svelte";
 	import PricingTableAverage from "$lib/PricingTableAverage.svelte";
@@ -21,16 +24,21 @@
     const PRICE_TAB_UPCOMING = "upcoming";
     const PRICE_TAB_7DAYS = "7-days";
     const PRICE_TAB_AVERAGE = "average";
-    const h2Class = "display-1 fs-3 my-3 text-light";
+    const SETTINGS_STATE_OPEN = "open";
+    const SETTINGS_STATE_CLOSED = "closed";
+    const h2Class = "display-1 fs-3 m-0 mb-3 text-light text-center";
 
     let region: string;
+    let importTariff: string;
+    let exportTariff: string;
     let priceCap: number = defaultPriceCap;
     let pricing: { [key: string]: Price[]; } = {};
     let pricesUpdating = true;
     let pricingLastUpdated: DateTime;
     let pricingTab = PRICE_TAB_UPCOMING;
+    let settingsState: string;
 
-    $: region, loadData();
+    $: region, importTariff, exportTariff, loadData();
 
     const loadData = async function() {
         if (!validRegion(region)) {
@@ -40,6 +48,8 @@
         pricesUpdating = true;
 
         LocalStorage.setItem("region", region);
+        LocalStorage.setItem("importTariff", importTariff);
+        LocalStorage.setItem("exportTariff", exportTariff);
 
         if (!pricing.hasOwnProperty(region)) {
             pricing[region] = [];
@@ -47,8 +57,8 @@
         }
 
         // No pricing? Load from storage
-        let importJsonStr = LocalStorage.getItem(`importJson-${region}`);
-        let exportJsonStr = LocalStorage.getItem(`exportJson-${region}`);
+        let importJsonStr = LocalStorage.getItem(`importJson-${region}-${importTariff}`);
+        let exportJsonStr = LocalStorage.getItem(`exportJson-${region}-${exportTariff}`);
 
         if (importJsonStr && exportJsonStr) {
             pricing[region] = OctopusApi.jsonToPriceArray(JSON.parse(importJsonStr), JSON.parse(exportJsonStr));
@@ -60,12 +70,14 @@
             const now = DateTime.now();
             let { importJson, exportJson } = await OctopusApi.fetch(
                 region,
+                importTariff,
+                exportTariff,
                 now.minus({day: 7*4}).startOf("day"),
                 now.plus({day: 1}).endOf("day")
             );
 
-            LocalStorage.setItem(`importJson-${region}`, JSON.stringify(importJson));
-            LocalStorage.setItem(`exportJson-${region}`, JSON.stringify(exportJson));
+            LocalStorage.setItem(`importJson-${region}-${importTariff}`, JSON.stringify(importJson));
+            LocalStorage.setItem(`exportJson-${region}-${exportTariff}`, JSON.stringify(exportJson));
 
             pricing[region] = OctopusApi.jsonToPriceArray(importJson, exportJson);
             pricing = pricing;
@@ -85,7 +97,7 @@
      * - page has been idle in background
      */
     const heartbeat = function() {
-        // Don't try if we've not done an inital load
+        // Don't try if we've not done an initial load
         if (!pricingLastUpdated) {
             return;
         }
@@ -111,8 +123,24 @@
         }
     }
 
+    const setSettings = (state: string) => {
+        settingsState = state;
+        LocalStorage.setItem("settingsState", state);
+    }
+
+    const toggleSettings = () => {
+        if (settingsState === SETTINGS_STATE_OPEN) {
+            setSettings(SETTINGS_STATE_CLOSED);
+        } else {
+            setSettings(SETTINGS_STATE_OPEN);
+        }
+    }
+
     onMount(() => {
         region = LocalStorage.getItem("region") || defaultRegion;
+        importTariff = LocalStorage.getItem("importTariff") || defaultImportTariff;
+        exportTariff = LocalStorage.getItem("exportTariff") || defaultExportTariff;
+        settingsState = LocalStorage.getItem("settingsState") || SETTINGS_STATE_OPEN;
         setInterval(() => { heartbeat()}, 10 * 1000);
     });
 </script>
@@ -122,17 +150,41 @@
     <meta name="description" content="Quickly see the upcoming electricity prices for Octopus Energy's Agile Octopus tariff." />
 </svelte:head>
 
-
 <div class="container mb-4 mx-auto">
     <p class="text-body-emphasis text-center">
         Quickly see the live, upcoming and average electricity prices for Octopus Energy's <a href="#about">Agile Octopus</a> tariff.
     </p>
     <p class="text-center">
-        <a href="#about" class="btn btn-outline-light btn-sm">Learn more</a>
+        <a href="#about" class="btn btn-outline-light btn-sm btn-inline">Learn more</a>
+        <button class="btn btn-outline-light btn-sm btn-inline" on:click={toggleSettings}>
+            <i class="fa-solid fa-gear"></i> Settings
+        </button>
     </p>
-
-    <RegionSelect bind:region={region} />
 </div>
+
+{#if settingsState === SETTINGS_STATE_OPEN}
+    <div id="settings" class="container mb-4 py-2 mx-auto">
+        <div class="alert alert-secondary m-0" role="alert">
+            <div class="display-1 fs-5 m-0 mb-3 text-light text-center">
+                <i class="fa-solid fa-gear"></i> Settings
+            </div>
+            <div class="pb-2">
+                <RegionSelect bind:region={region} />
+            </div>
+            <div class="pb-2">
+                <ImportTariffSelect bind:importTariff={importTariff} />
+            </div>
+            <div class="pb-2">
+                <ExportTariffSelect bind:exportTariff={exportTariff} />
+            </div>
+            <div class="pb-0 text-center">
+                <button class="btn btn-outline-light btn-sm" on:click={() => setSettings(SETTINGS_STATE_CLOSED) }>
+                    <i class="fa-solid fa-xmark"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+{/if}
 
 <div id="pricing-table" class="container mb-4 mx-auto">
     <ul class="nav nav-underline nav-fill mb-2">
@@ -202,7 +254,9 @@
     </p>
 
     <OctopusAd />
+</div>
 
+<div class="container mb-4 mx-auto">
     <h2 class="{h2Class}">The Energy Price Cap</h2>
     <p>
         The <u>{defaultPriceCap}p</u> electricity price cap is set by <a href="https://www.ofgem.gov.uk/information-consumers/energy-advice-households/energy-price-cap" target="_blank">Ofgem</a>.
@@ -211,5 +265,4 @@
         You can modify the cap below.
     </p>
     <PriceCapInput bind:priceCap={priceCap} defaultPriceCap={defaultPriceCap}></PriceCapInput>
-
 </div>

@@ -4,9 +4,9 @@ import Price, { type PriceHash } from "$lib/Price"
 const API_BASE = "https://api.octopus.energy/v1/products";
 
 export default class OctopusApi {
-    static async fetch (region: string, periodFrom: DateTime, periodTo: DateTime) {
-        const importUrl = `${API_BASE}/AGILE-FLEX-22-11-25/electricity-tariffs/E-1R-AGILE-FLEX-22-11-25-${region}/standard-unit-rates/?page_size=1500&period_from=${periodFrom.toUTC().toISO()}&period_to=${periodTo.toUTC().toISO()}`;
-        const exportUrl = `${API_BASE}/AGILE-OUTGOING-19-05-13/electricity-tariffs/E-1R-AGILE-OUTGOING-19-05-13-${region}/standard-unit-rates/?page_size=1500&period_from=${periodFrom.toUTC().toISO()}&period_to=${periodTo.toUTC().toISO()}`;
+    static async fetch (region: string, tariffImport: string, tariffExport: string, periodFrom: DateTime, periodTo: DateTime) {
+        const importUrl = `${API_BASE}/${tariffImport}/electricity-tariffs/E-1R-${tariffImport}-${region}/standard-unit-rates/?page_size=1500&period_from=${periodFrom.toUTC().toISO()}&period_to=${periodTo.toUTC().toISO()}`;
+        const exportUrl = `${API_BASE}/${tariffExport}/electricity-tariffs/E-1R-${tariffExport}-${region}/standard-unit-rates/?page_size=1500&period_from=${periodFrom.toUTC().toISO()}&period_to=${periodTo.toUTC().toISO()}`;
 
         const importResp = await fetch(importUrl);
         const exportResp = await fetch(exportUrl);

@@ -1,3 +1,5 @@
+export const defaultRegion = "B";
+
 export class Region {
     code: string;
     name: string;
@@ -34,7 +36,6 @@ export const regions: Region[] = [
     new Region("P", "Northern Scotland"),
 ];
 
-export const defaultRegion = "B";
 
 export const getRegionByCode = function(code: string) {
     for (const region of regions) {
