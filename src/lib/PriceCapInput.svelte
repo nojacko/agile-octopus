@@ -23,10 +23,9 @@
 </script>
 
 <div class="input-group">
-    <span class="input-group-text">Price cap</span>
     <input bind:value={priceCap} type="number" min={min} max={max} class="form-control">
     <span class="input-group-text">pence/kWh</span>
     <button on:click={() => { priceCap = defaultPriceCap }} class="btn btn-outline-secondary" type="button" title="Reset Price Cap">
-        <i class="fa-solid fa-arrow-rotate-right"></i> Reset
+        <i class="fa-solid fa-arrow-rotate-right"></i>
     </button>
 </div>
