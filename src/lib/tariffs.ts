@@ -37,7 +37,6 @@ export const tariffs: Tariff[] = [
     // Export
     new Tariff("AGILE-OUTGOING-BB-23-02-28", "Agile Outgoing Octopus February 2023 v1", EXPORT),
     new Tariff("AGILE-OUTGOING-19-05-13", "Agile Outgoing Octopus May 2019", EXPORT),
-    new Tariff("AGILE-OUTGOING-19-05-13", "Agile Outgoing Octopus May 2019", EXPORT),
 ];
 
 export const getTariffByCode = function(code: string) {
