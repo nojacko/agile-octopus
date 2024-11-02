@@ -1,5 +1,5 @@
 
-export const defaultImportTariff = "AGILE-BB-23-12-06";
+export const defaultImportTariff = "AGILE-24-10-01";
 export const defaultExportTariff = "AGILE-OUTGOING-19-05-13";
 
 export const IMPORT = "IMPORT";
@@ -21,6 +21,9 @@ export class Tariff {
 }
 
 export const tariffs: Tariff[] = [
+    // Import
+    new Tariff("AGILE-24-10-01", "Agile Octopus October 2024 v1", IMPORT),
+    new Tariff("AGILE-BB-24-10-01", "Agile Octopus October 2024 v1", IMPORT),
     new Tariff("AGILE-24-04-03", "Agile Octopus April 2024 v1", IMPORT),
     new Tariff("AGILE-BB-24-04-03",  "Agile Octopus April 2024 v1", IMPORT),
     new Tariff("AGILE-23-12-06", "Agile Octopus December 2023 v1", IMPORT),
@@ -31,8 +34,10 @@ export const tariffs: Tariff[] = [
     new Tariff("AGILE-22-07-22", "Agile Octopus July 2022 v1", IMPORT),
     new Tariff("AGILE-18-02-21", "Agile Octopus February 2018", IMPORT),
 
+    // Export
+    new Tariff("AGILE-OUTGOING-BB-23-02-28", "Agile Outgoing Octopus February 2023 v1", EXPORT),
     new Tariff("AGILE-OUTGOING-19-05-13", "Agile Outgoing Octopus May 2019", EXPORT),
-    new Tariff("AGILE-OUTGOING-BB-23-02-28", "Agile Outgoing Octopus February 2023", EXPORT),
+    new Tariff("AGILE-OUTGOING-19-05-13", "Agile Outgoing Octopus May 2019", EXPORT),
 ];
 
 export const getTariffByCode = function(code: string) {

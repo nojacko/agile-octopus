@@ -11,6 +11,11 @@ npm install
 npm run dev
 ```
 
+### Update Tariffs
+
+* `npx tsx src/lib/script/tariffs.ts`
+* Copy output to `src/lib/tariffs.ts`
+
 ## Building
 
 To create a production version of your app:
