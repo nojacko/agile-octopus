@@ -1,13 +1,13 @@
 <script lang="ts">
-	export let data;
+    import BreadcrumbAbout from "$lib/Breadcrumb/BreadcrumbAbout.svelte";
+    import SEO from "$lib/SEO.svelte";
 </script>
 
 <svelte:head>
-    <title>Plunge Pricing - {data.site.name}</title>
-    <meta name="description" content="Quickly see the upcoming electricity prices for Octopus Energy's Agile Octopus tariff." />
+    <SEO title="Plunge Pricing"/>
 </svelte:head>
 
-<h2><a class="link-light" href="/about">About</a> / Plunge Pricing</h2>
+<BreadcrumbAbout name="Plunge Pricing" h2="What is Plunge Pricing?" />
 
 <p>Plunge pricing, also known as negative pricing, is a fascinating phenomenon in the electricity market that challenges conventional economic norms. Unlike traditional commodities, electricity is a unique and dynamic product with supply and demand intricacies that can lead to moments where its price turns negative. In essence, plunge pricing means that rather than paying for electricity, consumers are paid to use it. This counterintuitive occurrence arises due to a complex interplay of factors within the energy grid.</p>
 

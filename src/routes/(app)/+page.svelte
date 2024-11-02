@@ -2,6 +2,7 @@
 	import { onMount } from "svelte";
     import { DateTime } from "luxon";
 
+    import SEO from "$lib/SEO.svelte";
 	import IconAboveCap from "$lib/Icon/IconAboveCap.svelte";
 	import PriceCapInput from "$lib/PriceCapInput.svelte";
 	import PricingTable7Days from "$lib/PricingTable7Days.svelte";
@@ -146,8 +147,7 @@
 </script>
 
 <svelte:head>
-    <title>Agile Octopus Price Tracker</title>
-    <meta name="description" content="Quickly see the upcoming electricity prices for Octopus Energy's Agile Octopus tariff." />
+    <SEO />
 </svelte:head>
 
 <div class="container mb-4 mx-auto">
@@ -217,8 +217,8 @@
     <p><a href="{OCTOPUS_LINK}" target="_blank">Agile Octopus</a> includes Plunge Pricing that lets you take advantage of these negative price events, and get paid for the electricity you use!</p>
 
     <h2 id="how-to-get-agile" class="{h2Class}">How To Get Agile Octopus?</h2>
-    <p>Switch to <a href="{OCTOPUS_LINK}" target="_blank">Octopus Energy</a> and get £50 free credit!</p>
-    <p>After the switch has completed, visit <a href="https://octopus.energy/smart/agile/" target="_blank">Agile Octopus</a> to sign up.</p>
+    <p>Switch to <a href="{OCTOPUS_LINK}" target="_blank">Octopus Energy</a> by <a href="{OCTOPUS_LINK}" target="_blank">clicking here</a>.</p>
+    <p>Existing customers can change their tariff from their Octopus Energy account.</p>
 
     <OctopusAd />
 
