@@ -1,6 +1,6 @@
 <script lang="ts">
     import SEO from "$lib/SEO.svelte";
-    import OctopusAd from "$lib/OctopusAd.svelte";
+    import AdOctopus from "$lib/AdOctopus.svelte";
     import BreadcrumbAbout from "$lib/Breadcrumb/BreadcrumbAbout.svelte";
 </script>
 
@@ -27,4 +27,4 @@
 <h3>Cheap Energy On Sunny Days</h3>
 <p>On a sunny summer's day prices will drop around 11am to 3pm</p>
 
-<OctopusAd />
+<AdOctopus />

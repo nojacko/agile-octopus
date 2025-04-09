@@ -11,7 +11,8 @@
     import { defaultExportTariff, defaultImportTariff } from "$lib/tariffs";
     import { OCTOPUS_LINK } from "$lib/vars";
     import LocalStorage from "$lib/local-storage";
-    import OctopusAd from "$lib/OctopusAd.svelte";
+    import AdOctopus from "$lib/AdOctopus.svelte";
+    import AdBuyMeACoffee from "$lib/AdBuyMeACoffee.svelte";
     import OctopusApi from "$lib/octopus-api";
     import Price from "$lib/Price";
     import PricingTable from "$lib/PricingTable.svelte";
@@ -142,7 +143,7 @@
         importTariff = LocalStorage.getItem("importTariff") || defaultImportTariff;
         exportTariff = LocalStorage.getItem("exportTariff") || defaultExportTariff;
         settingsState = LocalStorage.getItem("settingsState") || SETTINGS_STATE_OPEN;
-        setInterval(() => { heartbeat()}, 10 * 1000);
+        setInterval(() => { heartbeat()}, 5 * 1000);
     });
 </script>
 
@@ -186,7 +187,9 @@
     </div>
 {/if}
 
-<div id="pricing-table" class="container mb-4 mx-auto">
+<div id="pricing-table" class="anchor"></div>
+
+<div class="container mb-4 mx-auto">
     <ul class="nav nav-underline nav-fill mb-2">
         <li class="nav-item p-0">
             <a href="#pricing-table" class="nav-link p-1 {(pricingTab === PRICE_TAB_UPCOMING) ? "active" : "text-body-emphasis"}"
@@ -212,15 +215,18 @@
 </div>
 
 <div class="container mb-4 mx-auto">
-    <h2 id="about" class="{h2Class}">What Is Agile Octopus?</h2>
+    <AdBuyMeACoffee />
+    <div id="about" class="anchor"></div>
+    <h2 class="{h2Class}">What Is Agile Octopus?</h2>
     <p>With <a href="{OCTOPUS_LINK}" target="_blank">Agile Octopus</a>, you get access to half-hourly energy prices, tied to wholesale prices and updated daily. So when wholesale electricity prices drop, so do your bills - and if you can shift your daily electricity use outside of peak times, you can save even more.</p>
     <p><a href="{OCTOPUS_LINK}" target="_blank">Agile Octopus</a> includes Plunge Pricing that lets you take advantage of these negative price events, and get paid for the electricity you use!</p>
 
-    <h2 id="how-to-get-agile" class="{h2Class}">How To Get Agile Octopus?</h2>
+    <div id="how-to-get-agile" class="anchor"></div>
+    <h2 class="{h2Class}">How To Get Agile Octopus?</h2>
     <p>Switch to <a href="{OCTOPUS_LINK}" target="_blank">Octopus Energy</a> by <a href="{OCTOPUS_LINK}" target="_blank">clicking here</a>.</p>
     <p>Existing customers can change their tariff from their Octopus Energy account.</p>
 
-    <OctopusAd />
+    <AdOctopus />
 
     <h2 class="{h2Class}">Cheapest Electricity and Plunge Pricing!</h2>
 
@@ -253,7 +259,7 @@
         Anything from changes in global natural gas prices, power plant maintenance, weather conditions, and many more... so keep an eye on prices.
     </p>
 
-    <OctopusAd />
+    <AdOctopus />
 </div>
 
 <div class="container mb-4 mx-auto">

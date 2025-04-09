@@ -1,6 +1,6 @@
 <script lang="ts">
     import SEO from "$lib/SEO.svelte";
-    import OctopusAd from "$lib/OctopusAd.svelte";
+    import AdOctopus from "$lib/AdOctopus.svelte";
     import BreadcrumbAbout from "$lib/Breadcrumb/BreadcrumbAbout.svelte";
 
     import { OCTOPUS_LINK } from "$lib/vars";
@@ -23,7 +23,7 @@
     <li>After the switch completes you'll be credited with £50!</li>
 </ul>
 
-<OctopusAd />
+<AdOctopus />
 
 <p><strong>Why choose Octopus Energy?</strong></p>
 <ul>

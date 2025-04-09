@@ -3,14 +3,41 @@ body > div > .container {
 }
 
 #nav-bar {
+    background-color: rgb(33, 37, 41);
+}
+
+#nav-bar-follow {
     position: fixed;
-    bottom: 0rem;
+    top: 0rem;
     left: 0rem;
     right: 0rem;
     z-index: 10;
     background-color: rgb(33, 37, 41);
+    animation: fadeIn 0.5s ease-in-out;
 }
 
-#nav-bar a {
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+#nav-bar a, #nav-bar-follow a {
     color: White;
+}
+
+.nav-bar-hidden {
+    display: none;
+}
+
+
+/* Anchors */
+.anchor {
+    position: absolute;
+    height: 1;
+    margin-top: -2.2rem;
+    width: 1;
 }

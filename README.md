@@ -4,6 +4,8 @@ Quickly see the upcoming electricity prices for Octopus Energy's Agile Octopus t
 
 If you want to join [Octopus Energy](https://share.octopus.energy/sunny-river-570) please consider using my [link](https://share.octopus.energy/sunny-river-570) and get £50 free credit free!
 
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/nojacko)
+
 ## Developing
 
 ```bash

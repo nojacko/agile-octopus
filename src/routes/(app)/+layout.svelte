@@ -1,20 +1,56 @@
 <script lang="ts">
     import '../../app.css';
-    import OctopusAd from "$lib/OctopusAd.svelte";
+    import AdOctopus from "$lib/AdOctopus.svelte";
+	import NavBar from '$lib/NavBar.svelte';
 
     const navItemClass = "nav-link link-light"
+    const navBarClassDefault = "container-fluid mb-2 text-center text-body-secondary";
+
+    let y = 0;
+    let navBarClassFollow = navBarClassDefault;
+    let navBarPlaceholderTop = 0;
+
+    function updateNavBarPlaceholderTop() {
+        if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+            const navBar = document.getElementById('nav-bar');
+            if (navBar) {
+                navBarPlaceholderTop = navBar.getBoundingClientRect().top + window.scrollY + navBar.offsetHeight;
+            }
+        }
+
+        if (navBarPlaceholderTop < 10) {
+            navBarPlaceholderTop = 100;
+        }
+    }
+
+    function onScrollChange() {
+        updateNavBarPlaceholderTop();
+
+        if (y > navBarPlaceholderTop) {
+            navBarClassFollow = `${navBarClassDefault} border-bottom border-secondary-subtle py-1`;
+        } else {
+            navBarClassFollow = `${navBarClassDefault} nav-bar-hidden`;
+        }
+    }
+
+    $: if (y !== undefined) {
+        onScrollChange();
+    }
 </script>
 
-<h1 id="top" class="text-center display-1 fs-1 text-light mx-1 mt-2 mb-3">
+<h1 id="top" class="text-center display-1 fs-1 text-light mx-1 my-2">
     <a href="/" class="link-light link-underline link-underline-opacity-0 link-underline-opacity-100-hover">Agile Octopus Price Tracker</a>
 </h1>
+
+<div id="nav-bar" class="{navBarClassDefault}"><NavBar /></div>
+<div id="nav-bar-follow" class="{navBarClassFollow}"><NavBar /></div>
 
 <div class="container mb-4 mx-auto">
     <slot />
 </div>
 
 <div class="container mb-5 mx-auto">
-    <OctopusAd />
+    <AdOctopus />
     <p class="fs-1 text-center">🐙</p>
 
     <ul class="nav justify-content-center">
@@ -27,14 +63,4 @@
     </ul>
 </div>
 
-<div id="nav-bar" class="container-fluid border-top border-secondary-subtle py-1 text-center text-body-secondary">
-    <small>
-        <a href="#top"><i class="fa-solid fa-house"></i></a>
-        <i class="fa-solid fa-bolt fa-2xs"></i>
-        <a href="#pricing-table">Pricing</a>
-        <i class="fa-solid fa-bolt fa-2xs"></i>
-        <a href="#about">FAQs</a>
-        <i class="fa-solid fa-bolt fa-2xs"></i>
-        <a href="#how-to-get-agile" class="text-warning-emphasis">Free &pound;50!</a>
-    </small>
-</div>
+<svelte:window bind:scrollY={y} />

@@ -1,6 +1,6 @@
 <script lang="ts">
     import SEO from "$lib/SEO.svelte";
-    import OctopusAd from "$lib/OctopusAd.svelte";
+    import AdOctopus from "$lib/AdOctopus.svelte";
     import BreadcrumbAbout from "$lib/Breadcrumb/BreadcrumbAbout.svelte";
 </script>
 
@@ -29,4 +29,4 @@
 <h3>Bonus! Get £50 Free Credit</h3>
 <p>Join Octopus Energy with the link below and you'll get £50 free credit.</p>
 
-<OctopusAd />
+<AdOctopus />
