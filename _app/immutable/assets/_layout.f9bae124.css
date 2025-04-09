@@ -1,0 +1,1 @@
+body>div>.container{max-width:36rem}#nav-bar{background-color:#212529}#nav-bar-follow{position:fixed;top:0rem;left:0rem;right:0rem;z-index:10;background-color:#212529;animation:fadeIn .5s ease-in-out}@keyframes fadeIn{0%{opacity:0}to{opacity:1}}#nav-bar a,#nav-bar-follow a{color:#fff}.nav-bar-hidden{display:none}.anchor{position:absolute;height:1;margin-top:-2.2rem;width:1}
